@@ -1,0 +1,56 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block maincontent %}
+        <div class="uk-cover-container uk-height-large">
+            <img id="monitor" class="center-block" src="{{ video_server }}/stream?topic=/camera/rgb/image_rect_color" alt="" uk-cover>
+            <div class="uk-overlay uk-overlay-cover uk-default uk-position-bottom">
+                <h1 class="uk-heading-primary">Jeeves Vision 1.0</h1>
+                <div><form>
+                    <fieldset class="uk-fieldset">
+                        <div class="uk-margin">
+                            <select class="uk-select" id="camera">
+                                <option class="camera-option" alt="color" value="/camera/rgb/image_rect_color">Color</option>
+                                <option class="camera-option" alt="grayscale" value="/camera/rgb/image_mono">Grayscale</option>
+                                <option class="camera-option" alt="depth" value="/camera/depth/image_rect">Depth</option>
+                                <option class="camera-option" alt="face detection" value="/camera/face">Face detection</option>
+                            </select>
+                        </div>
+                    </fieldset>
+                </form></div>
+                <script>
+                    var stream_server = '{{ video_server }}/stream?topic=';
+                    $('.camera-option').click(function() {
+                        var select_val = $('select').val();
+                        var alt = $(this).attr('alt');
+                        console.log(select_val);
+                        console.log(alt);
+                        // add &timestamp to trigger GET - otherwise image won't refresh/update
+                        $('img#monitor').attr('src', stream_server+select_val+'&timestamp='+ new Date().getTime());
+                        $('img#monitor').attr('alt', alt);
+                        console.log($('img#monitor').attr('src'));
+                    });
+                    
+                </script>
+            </div>
+        </div>
+        
+        <div class="uk-child-width-1-1@m uk-grid-small uk-grid-match" uk-grid>
+            <div>
+                <div class="uk-card uk-card-default uk-card-body">
+                    <h3 class="uk-card-title">How To</h3>
+                    <p>Use the pull down widget to select a camera mode.</p>
+                    <dl class="uk-description-list">
+                        <dt>Color</dt>
+                        <dd>Basic color stream from Kinect RGB camera.</dd>
+                        <dt>Grayscale</dt>
+                        <dd>Grayscale stream from Kinect RGB camera.</dd>
+                        <dt>Depth</dt>
+                        <dd>Depth image stream from Kinect depth camera.</dd>
+                        <dt>Face detection</dt>
+                        <dd>Shows circle around detected face. Uses the camera on the head.</dd>
+                    </dl>
+
+                </div>
+            </div>
+{% endblock %}

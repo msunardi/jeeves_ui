@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <link rel="stylesheet" href="assets/uikit/css/uikit.min.css" />
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/uikit/js/uikit.min.js"></script>
+        <script src="assets/uikit/js/uikit-icons.min.js"></script>
+
+        <link rel="stylesheet" href="assets/leaflet/leaflet.css">
+        <script src="assets/leaflet/leaflet.js"></script>
+        <script src="assets/jquery-ui/jquery-ui.min.js"></script>
+        <script src="assets/imgViewer2/imgViewer2.min.js"></script>
+
+        <script src="assets/leaflet-responsive-popup/leaflet.responsive.popup.js"></script>
+		<link rel="stylesheet" href="assets/leaflet-responsive-popup/leaflet.responsive.popup.css" />
+
+        <style>
+        #map {
+            overflow: auto;
+        }
+        </style>
+
+        <!--<script type="text/JavaScript">
+            $(document).onLoad({
+                $("#img_map").imgViewer2({
+                    // zoom step
+                    zoomStep: 0.5,
+
+                    // the limit on the maximum zoom level of the image
+                    zoomMax: undefined,
+
+                    // is zoomable
+                    zoomable: true,
+
+                    // is draggable
+                    dragable: true,
+
+                    // callbacks
+                    onClick: $.noop,
+                    onReady: $.noop
+                    
+                });
+
+                $.widget("wgm.imgNotes2", $.wgm.imgViewer2, {
+                    options: {
+                        addNote: function(data) {
+                        var <a href="http://www.jqueryscript.net/tags.php?/map/">map</a> = this.map,
+                            loc = this.relposToLatLng(data.x, data.y);
+                        L.marker(loc).addTo(map).bindPopup(data.note);
+                        }
+                    },
+                    import: function(notes) {
+                        if (this.ready) {
+                            var self = this;
+                            $.each(notes, function() {
+                            self.options.addNote.call(self, this);
+                            }); 
+                        }
+                        }
+                    });
+
+                    $("#img_map").imgNotes2({
+                    onReady: function() {
+                        var notes = [ {x: "0.5", y:"0.5", note:"AFL Grand Final Trophy"}, 
+                            {x: "0.322", y:"0.269", note: '\
+                            <center><b>Brisbane Lions Flag</b><br/>\
+                            <img src="http://www.lions.com.au/static-resources/themes/brisbane/images/logo-brisbane.png"/></center>\
+                            <a href="http://www.lions.com.au/" target="blank">The Brisbane Lions</a> \
+                            is an <a href="http://en.wikipedia.org/wiki/Australian_rules_football" target="blank">Australian rules football club.</a>'
+                            },
+                            {x: "0.824", y: "0.593", note: "Fluffy microphone"}];
+                        this.import(notes);
+                    }
+                });
+            });
+        </script>-->
+    </head>
+    <body>
+        <nav class="uk-navbar-container" uk-navbar>
+            <div class="uk-navbar-left">
+
+                <ul class="uk-navbar-nav">
+                    <li><a href="uikit-test.html">Home</a></li>                                        
+                    <li class="uk-active"><a href="#">Tour</a></li>
+                    <li><a href="#">Vision</a></li>
+                    <li>
+                        <a href="#">Dashboard</a>
+                        <div class="uk-navbar-dropdown">
+                            <ul class="uk-nav uk-navbar-dropdown-nav">
+                                <li><a href="#">System Status</a></li>
+                                <li><a href="#">Battery</a></li>
+                                <li><a href="#">Logs</a></li>                                
+                            </ul>
+                        </div>
+                    </li>
+                    <li><a href="#">Ex-Mode</a></li>
+                </ul>
+
+            </div>
+        </nav>
+        <div class="uk-cover-container uk-height-large" id="map">
+            <img id="img_map" src="assets/Img/hallways_all_90_small2.png" alt="" uk-cover>
+            <script type="text/javascript">
+                ;(function($) {
+                    $.widget("wgm.imgNotes2", $.wgm.imgViewer2, {
+                        options: {
+                /*
+                *	Defaault action for addNote callback
+                */
+                            addNote: function(data) {
+                                var map = this.map,
+                                    loc = this.relposToLatLng(data.x, data.y);
+                                var popup = L.responsivePopup({ hasTip: true, autoPan: false}).setContent(data.note);
+                                // var icon = L.BeautifyIcon.icon({icon: 'arrow-down',
+                                //                                 borderColor: '#FFF607',
+                                //                                 textColor: '#FFF607',
+                                //                                 backgroundColor: 'transparent'
+                                // });
+                                
+                                L.marker(loc, {icon: icon}).addTo(map).bindPopup(popup);
+                            }
+                            
+                        },
+                        
+                /*
+                *	Add notes from a javascript array
+                */
+                        import: function(notes) {
+                            if (this.ready) {
+                                var self = this;
+                                $.each(notes, function() {
+                                    self.options.addNote.call(self, this);
+                                });	
+                            }
+                        }
+                    });
+                    $(document).ready( function() {
+                        var $img = $("#img_map").imgNotes2( {
+                                        onReady: function() {
+                                            var notes = [	{x: "0.5", y:"0.5", note:"AFL Grand Final Trophy"}, 
+                                                            {x: "0.322", y:"0.269", note: '\
+                                                            <center><b>Brisbane Lions Flag</b><br/>\
+                                                            <img src="http://www.lions.com.au/static-resources/themes/brisbane/images/logo-brisbane.png"/></center>\
+                                                            <a href="http://www.lions.com.au/" target="blank">The Brisbane Lions</a> \
+                                                            is an <a href="http://en.wikipedia.org/wiki/Australian_rules_football" target="blank">Australian rules football club.</a>'
+                                                            },
+                                                            {x: "0.824", y: "0.593", note: "Fluffy microphone"}];
+                                            this.import(notes);
+                                        }
+                        });
+                    });
+                })(jQuery);
+                </script>
+                <!--<canvas id='respondCanvas' width='1270' height='450'></canvas>
+                <script>
+                // var ctx = document.getElementById("respondCanvas").getContext("2d");
+                            
+                var canvas = document.getElementById('respondCanvas');
+                var ctx = canvas.getContext('2d');
+                var imageObj = new Image();
+                var windowWidth = 1270;
+                var windowHeight = 450;
+
+                imageObj.src = 'assets/Img/hallways_all_90_small2.png';
+
+                imageObj.onload = function() {
+                    // canvas.width = document.width;
+                    ctx.drawImage(imageObj, 0, 0, imageObj.width, imageObj.height);
+                    windowX += 10;
+                    if (windowX>imageObj.width - windowWidth){
+                        windowX = imageObj.width - windowWidth;
+                    }
+
+                };
+
+                // $(window).on('resize', function(){
+                //     canvas.width = document.width;
+                //     // canvas.height = document.height;
+                // });
+
+                // ctx.fillRect(
+                //     (canvas.width - imageObj.width) / 2, 
+                //     (canvas.height - imageObj.height) / 2, 
+                //     imageObj.width, 
+                //     imageObj.height
+                // );
+
+            // #layer1
+                ctx.save();
+                ctx.transform(1.000000, 0.000000, 0.000000, 1.000000, 0.000000, -594.362140);
+                
+            // #path3417
+                ctx.beginPath();
+                ctx.lineJoin = 'miter';
+                ctx.strokeStyle = 'rgb(0, 0, 0)';
+                ctx.lineCap = 'butt';
+                ctx.lineWidth = 0.425431;
+                ctx.fillStyle = 'rgba(2, 117, 216, 0.7)';
+                ctx.arc(177.043300, 893.534060, 48.620636, 0.000000, 6.28318531, 1);
+                ctx.fill();
+                ctx.stroke();
+                
+            // #path3417-3
+                ctx.beginPath();
+                ctx.lineJoin = 'miter';
+                ctx.strokeStyle = 'rgb(0, 0, 0)';
+                ctx.lineCap = 'butt';
+                ctx.lineWidth = 0.425431;
+                ctx.fillStyle = 'rgba(2, 117, 216, 0.7)';
+                ctx.arc(449.318880, 961.602970, 48.620636, 0.000000, 6.28318531, 1);
+                ctx.fill();
+                ctx.stroke();
+                
+            // #path3417-6
+                ctx.beginPath();
+                ctx.lineJoin = 'miter';
+                ctx.strokeStyle = 'rgb(0, 0, 0)';
+                ctx.lineCap = 'butt';
+                ctx.lineWidth = 0.425431;
+                ctx.fillStyle = 'rgba(2, 117, 216, 0.7)';
+                ctx.arc(424.600010, 711.030210, 48.620636, 0.000000, 6.28318531, 1);
+                ctx.fill();
+                ctx.stroke();
+                
+            // #path3417-7
+                ctx.beginPath();
+                ctx.lineJoin = 'miter';
+                ctx.strokeStyle = 'rgb(0, 0, 0)';
+                ctx.lineCap = 'butt';
+                ctx.lineWidth = 0.425431;
+                ctx.fillStyle = 'rgba(2, 117, 216, 0.7)';
+                ctx.arc(672.973820, 874.085820, 48.620636, 0.000000, 6.28318531, 1);
+                ctx.fill();
+                ctx.stroke();
+                
+            // #path3417-5
+                ctx.beginPath();
+                ctx.lineJoin = 'miter';
+                ctx.strokeStyle = 'rgb(0, 0, 0)';
+                ctx.lineCap = 'butt';
+                ctx.lineWidth = 0.425431;
+                ctx.fillStyle = 'rgba(2, 117, 216, 0.7)';
+                ctx.arc(1049.783800, 797.508300, 48.620636, 0.000000, 6.28318531, 1);
+                ctx.fill();
+                ctx.stroke();
+                ctx.restore();
+
+                </script>-->
+            
+        </div>
+        <div class="uk-child-width-1-3@m uk-grid-small uk-grid-match" uk-grid>
+            <div>
+                <div class="uk-card uk-card-default uk-card-body">
+                    <h3 class="uk-card-title">Speech</h3>
+                    <p>My speech is powered by Mycroft.ai and PocketSphinx! Get my attention by calling my name: <strong>"JEEVES!"</strong>, 
+                    and you can ask me something. Try: <strong>"Jeeves. Tell me a joke."</strong> or 
+                    <strong>"Jeeves. What is the weather in Portland, Oregon?"</strong></p>
+                </div>
+            </div>
+            <div>
+                <div class="uk-card uk-card-primary uk-card-body">
+                    <h3 class="uk-card-title">Ask for a Tour</h3>
+                    <p>You can ask me to give you a tour of the Engineering Building by clicking the <strong>TOUR</strong> link on the top menu, 
+                    or just say: <strong>"Jeeves! Give me a tour."</strong></p>
+                </div>
+            </div>
+            <div>
+                <div class="uk-card uk-card-secondary uk-card-body">
+                    <h3 class="uk-card-title">Check Out My Other Features</h3>
+                    <p>See what I see in the <strong>VISION</strong> link, how my system is doing in the <strong>DASHBOARD</strong> link, 
+                    or help me with an experiment in my <strong>EX-MODE</strong>.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!--<div class="uk-container-expand">
+            <div class="uk-position-center">
+                <img src="assets/Img/jeeves_frontpage2.png" alt="">
+                <div class="uk-position-top">
+                    <nav class="uk-navbar-container uk-navbar-transparent" uk-navbar>
+                        <div class="uk-navbar-left">
+                            <ul class="uk-navbar-nav">
+                                <li class="uk-active"><a href="#">Active</a></li>
+                                <li><a href="#">Item</a></li>
+                                <li>
+                                    <a href="#">Parent</a>
+                                    <div class="uk-navbar-dropdown">
+                                        <ul class="uk-nav uk-navbar-dropdown-nav">
+                                            <li class="uk-active"><a href="#">Active</a></li>
+                                            <li><a href="#">Item</a></li>
+                                            <li class="uk-nav-header">Header</li>
+                                            <li><a href="#">Item</a></li>
+                                            <li><a href="#">Item</a></li>
+                                            <li class="uk-nav-divider"></li>
+                                            <li><a href="#">Item</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                    
+                </div>
+                
+            </div>            
+        </div>-->
+        
+    </body>
+    <footer>
+        <div class="uk-section uk-section-small">
+            <h3>Section Muted</h3>
+
+        <div class="uk-grid-match uk-child-width-1-2@m" uk-grid>
+            <div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+            </div>
+            <div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+            </div>
+        </div>
+        </div>
+    </footer>
+</html>

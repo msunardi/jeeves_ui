@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <link rel="stylesheet" href="{% static 'main/uikit/css/uikit.min.css' %}" />
+        <script src="{% static 'main/js/jquery.min.js' %}"></script>
+        <script src="{% static 'main/uikit/js/uikit.min.js' %}"></script>
+        <script src="{% static 'main/uikit/js/uikit-icons.min.js' %}"></script>
+
+        {% block scripts %}{% endblock scripts %}
+
+        {% block styles %}{% endblock styles %}
+        
+    </head>
+    <body>
+        <nav class="uk-navbar-container" uk-navbar uk-sticky>
+            <div class="uk-navbar-center">
+
+                <ul class="uk-navbar-nav">
+                    <li {% if index_active %}class='uk-active'{% endif %}><a href="{% url 'main:index' %}">Home</a></li>
+                    <li {% if tour_active %}class='uk-active'{% endif %}><a href="{% url 'main:tour' %}">Tour</a></li>
+                    <li {% if aboutpsu_active %}class='uk-active'{% endif %}><a href="{% url 'main:aboutpsu' %}">About PSU/MCECS</a></li>
+                    <li {% if vision_active %}class='uk-active'{% endif %}><a href="{% url 'main:vision' %}">Vision</a></li>
+                    <li {% if dashboard_active %}class='uk-active'{% endif %}>
+                        <a href="{% url 'main:dashboard' %}">Dashboard</a>
+                        <div class="uk-navbar-dropdown">
+                            <ul class="uk-nav uk-navbar-dropdown-nav">
+                                <li><a href="{% url 'main:dashboard' %}#system">System</a></li>
+                                <li><a href="{% url 'main:dashboard' %}#devices">Devices</a></li>
+                                <li><a href="#">Logs</a></li>                                
+                            </ul>
+                        </div>
+                    </li>
+                    <li><a href="#">About Me</a></li>
+                    <li><a href="#">Ex-Mode</a></li>
+                </ul>
+
+            </div>
+        </nav>
+        {% block maincontent %}
+        
+        {% endblock maincontent %}
+        
+    </body>
+    <footer>
+        <div class="uk-section uk-section-small">
+            <h3>Section Muted</h3>
+
+        <div class="uk-grid-match uk-child-width-1-2@m" uk-grid>
+            <div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+            </div>
+            <div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+            </div>
+        </div>
+        </div>
+    </footer>
+</html>
