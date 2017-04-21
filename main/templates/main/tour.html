@@ -60,8 +60,8 @@
 {% block scripts %}
     <script type="text/javascript">
     // Ref: http://gabrieleromanato.name/jquery-create-image-markers-with-custom-data-attributes/
-        var active_captions = '{"coords": [{"top":280,"left":130,"text":"NEAR Lab","id":"NEAR_lab"},{"top":85,"left":400,"text":"EE Fishbowl","id":"ee"},{"top":360,"left":435,"text":"Intelligent Robotics Lab","id":"robot_lab"},{"top":235,"left":670,"text":"Biomedical Signal Procesing Lab","id":"Biomedical_lab"},{"top":190,"left":1080,"text":"EB Stairs/Elevators","id":"stairs"},{"top":95,"left":950,"text":"Lab for Interconnected Devices"}]}'
-        var inactive_captions = '{"coords": [{"top":225,"left":450,"text":"Circuit Lounge","id":"circuit"}, {"top":45,"left":170,"text":"Tektronix Lab","id":"tektronix"}, {"top":85,"left":10,"text":"Engineering and Technology Management Department","id":"etm"}, {"top":240,"left":10,"text":"<span uk-icon=\'icon: chevron-left\'></span>Harrison St. Exit","id":"n_exit"}, {"top":165,"left":300,"text":"Restrooms","id":"restroom"},{"top":25,"left":920,"text":"CS Lounge","id":"cs_lounge"}, {"top":185,"left":750,"text":"EB 86-01", "id":"eb8601"},{"top":270,"left":920,"text":"Portland State Aerospace Society (PSAS)","id":"psas"}]}'
+        var active_captions = '{"coords": [{"top":280,"left":130,"text":"NEAR Lab","id":"NEAR_lab","img":"near1.jpg"},{"top":85,"left":400,"text":"EE Fishbowl","id":"ee","img":"ee_fishbowl.jpg"},{"top":360,"left":435,"text":"Intelligent Robotics Lab","id":"robot_lab","img":"robotics1.jpg"},{"top":235,"left":670,"text":"Biomedical Signal Procesing Lab","id":"Biomedical_lab","img":"biomedical2.jpg"},{"top":190,"left":1080,"text":"EB Stairs/Elevators","id":"stairs","img":"eb_stairs.jpg"},{"top":95,"left":950,"text":"Lab for Interconnected Devices","img":"lid1.jpg"}]}'
+        var inactive_captions = '{"coords": [{"top":225,"left":450,"text":"Circuit Lounge","id":"circuit","img":"circuit_lounge.jpg"}, {"top":45,"left":170,"text":"Tektronix Lab","id":"tektronix","img":"tektronix1.jpg"}, {"top":85,"left":10,"text":"Engineering and Technology Management Department","id":"etm","img":"etm1.jpg"}, {"top":240,"left":10,"text":"<span uk-icon=\'icon: chevron-left\'></span>Harrison St. Exit","id":"n_exit","img":"harrison_exit.jpg"}, {"top":165,"left":300,"text":"Restrooms","id":"restroom"},{"top":25,"left":920,"text":"CS Tutor Lounge","id":"cs_lounge","img":"cs_tutor.jpg"}, {"top":185,"left":750,"text":"EB 86-01", "id":"eb8601"},{"top":270,"left":920,"text":"Portland State Aerospace Society (PSAS)","id":"psas","img":"psas.jpg"}]}'
         var Markers = {
             fn: {
                 addMarkers: function() {
@@ -78,9 +78,10 @@
                         var left = obj.left;
                         var text = obj.text;
                         var id = obj.id;
+                        var img = obj.img;
 
                         var header = '<div class="uk-modal-header"><h2 class="uk-modal-title">'+text+'</h2></div>';
-                        var body = '<div class="uk-modal-body"></div>';
+                        var body = '<div class="uk-modal-body"><div><div class="uk-inline uk-visible-toggle uk-light"><img src="{% static 'main/images/locations' %}/'+img+'" alt="'+text+'"><a class="uk-position-center-left uk-position-small uk-hidden-hover uk-slidenav-large" href="#" uk-slidenav-previous></a><a class="uk-position-center-right uk-position-small uk-hidden-hover uk-slidenav-large" href="#" uk-slidenav-next></a></div></div></div>';
                         var footer = '<p class="uk-text-center"><button class="uk-button uk-button-primary" type="button">Take me there</button><button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button></p>';
                         var modal = '<div class="uk-modal-dialog uk-modal-body"><button class="uk-modal-close-default" type="button" uk-close></button>'+header+body+footer+'</div>';
 
@@ -103,9 +104,10 @@
                         var left = obj.left;
                         var text = obj.text;
                         var id = obj.id;
+                        var img = obj.img;
 
                         var header = '<div class="uk-modal-header"><h2 class="uk-modal-title">'+text+'</h2></div>';
-                        var body = '<div class="uk-modal-body"></div>';
+                        var body = '<div class="uk-modal-body"><div><div class="uk-inline uk-visible-toggle uk-light"><img src="{% static 'main/images/locations' %}/'+img+'" alt="'+text+'"><a class="uk-position-center-left uk-position-small uk-hidden-hover uk-slidenav-large" href="#" uk-slidenav-previous></a><a class="uk-position-center-right uk-position-small uk-hidden-hover uk-slidenav-large" href="#" uk-slidenav-next></a></div></div></div>';
                         var footer = '<p class="uk-text-center"><button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button></p>';
                         var modal = '<div class="uk-modal-dialog uk-modal-body"><button class="uk-modal-close-default" type="button" uk-close></button>'+header+body+footer+'</div>';
 
