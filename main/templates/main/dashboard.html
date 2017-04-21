@@ -10,8 +10,8 @@
 
         // ROS SETUP
         var ros = new ROSLIB.Ros({
-            url: 'ws://localhost:9090' // url to your rosbridge server
-            // url: 'ws://192.168.1.2:9090' // url to your rosbridge server
+            // url: 'ws://localhost:9090' // url to your rosbridge server
+            url: 'ws://192.168.1.2:9090' // url to your rosbridge server
         });
 
         ros.on('connection', function() {
@@ -66,10 +66,9 @@
 
         // SUBSCRIBERS
         battery.subscribe(function(msg) {
-            console.log(msg);
             $('#topic_data').text(msg.amps + msg.amp_hours);
-            $('#lin1').text(msg.amps);
-            $('#lin2').text(msg.amp_hours);
+            $('#amps').text(msg.amps);
+            $('#amphours').text(msg.amp_hours);
         });
 
         exampleTopic.subscribe(function(msg) {
@@ -129,15 +128,36 @@
         });
 
         diagnostics.subscribe(function(msg) {
+            // console.log('Diagnostics:');
             // console.log(msg);
-            var name = msg.status[0].name;
-            var levelbyte = msg.status[0].level;
-            var message = msg.status[0].message;
-            var hardware_id = msg.status[0].hardware_id;
-            var values = msg.status[0].values;
+            // if(!(msg.hasOwnProperty('status'))) 
+            //     return;
+            var name = '';
+            var levelbyte = '';
+            var message = '';
+            var hardware_id = '';
+            var values = '';
             var value_text = "";
-            var status = "OK";
-            
+
+            if(!msg.status.length) {
+                name = msg.status.name;
+                levelbyte = msg.status.level;
+                message = msg.status.message;
+                hardware_id = msg.status.hardware_id;
+                values = msg.status.values;
+                value_text = "";
+                status = "OK";
+            } else {
+                if (!msg.status[0].hasOwnProperty('name'))
+                    return;
+                name = msg.status[0].name;
+                levelbyte = msg.status[0].level;
+                message = msg.status[0].message;
+                hardware_id = msg.status[0].hardware_id;
+                values = msg.status[0].values;
+                value_text = "";
+                status = "OK";
+            }
             // for (i = 0; i < values.length; i++) {
             //     value_text += values[i].key + "/" + values[i].value + "\n";
             // }
@@ -161,6 +181,10 @@
             // $('#message').text(message);
             // $('#hardware_id').text(hardware_id);
             // $('#values').html(newHTML.join(""));
+            if (!name) // If doesn't have name property, ignore the message.
+            {
+                return;
+            }
             var name_arr = name.split(':');
             var id = name_arr[0] + '-modal';
             var header = '<div class="uk-modal-header"><h2 class="uk-modal-title">'+name+'</h2></div>';
@@ -171,7 +195,7 @@
 
             var table_entry = '<tr class="uk-preserve-color"><td>'+name+'</td><td>'+status+'</td><td>'+message+'</td><td>'+hardware_id+'</td><td>'+x_modal+'</td></tr>';
 
-            console.log(table_entry);
+            // console.log(table_entry);
 
             $('#devices-table-body').html(table_entry);
         });
@@ -238,8 +262,8 @@
                         <div class="uk-card-badge uk-label"><span uk-icon="icon: bolt; ratio: 2;"></span></div>
                         <h3 class="uk-card-title">Power</h3>
                         <dl class="uk-description-list">
-                            <dt>Amps:</dt><dd><span id="lin1"></span></dd>
-                            <dt>Amp Hours:</dt><dd><span id="lin2"></span></dd>
+                            <dt>Amps:</dt><dd><span id="amps"></span></dd>
+                            <dt>Amp Hours:</dt><dd><span id="amphours"></span></dd>
                         </dl>
                     </div>
                 </div>
