@@ -5,8 +5,12 @@
     <style>
 
         #image-wrapper {
-            width: 1270px;
-            height: 480px;
+            /*width: 1270px;
+            height: 480px;*/
+            /*width: auto;
+            height: auto;*/
+            width: 1651px;
+            height: 624px;
             position: relative;
             margin: 0em auto;
             background: #f6f6f6;
@@ -19,26 +23,31 @@
         }
 
         span.marker {
-            width: 120px;
+            width: 200px;
             height: auto;
             background: #1e87f0;
             color: #fff;
             text-align: center;
             position: absolute;
-            line-height: 20px;
+            line-height: 30px;
             cursor: pointer;
-            padding: 8px;
+            padding: 16px;
+            font-size: 1.2em;
+            opacity: 0.9;
         }
         span.inactive_marker {
-            width: 120px;
+            width: 160px;
             height: auto;
-            background: none;
-            color: #333;
+            /*background: none;*/
+            background: #333;
+            opacity: 0.5;
+            color: #fff;
             text-align: center;
             position: absolute;
-            line-height: 20px;
+            line-height: 24px;
             cursor: pointer;
-            padding: 8px;
+            padding: 12px;
+            /*font-size: 1.2em;*/
         }
         /*span.marker:before {
             content: '+';
@@ -54,6 +63,10 @@
             left: -60px;
             display: none;
         }
+
+        button {
+            size: 2em;
+        }
     </style>
 {% endblock styles %}
 
@@ -63,8 +76,8 @@
 
     <script type="text/javascript">
     // Ref: http://gabrieleromanato.name/jquery-create-image-markers-with-custom-data-attributes/
-        var active_captions = '{"coords": [{"top":280,"left":130,"text":"NEAR Lab","id":"NEAR_lab","img":"near1.jpg"},{"top":85,"left":400,"text":"EE Fishbowl","id":"ee","img":"ee_fishbowl.jpg"},{"top":360,"left":435,"text":"Intelligent Robotics Lab","id":"robot_lab","img":"robotics1.jpg"},{"top":235,"left":670,"text":"Biomedical Signal Processing Lab","id":"Biomedical_lab","img":"biomedical2.jpg"},{"top":190,"left":1080,"text":"EB Stairs/Elevators","id":"stairs","img":"eb_stairs.jpg"},{"top":95,"left":950,"text":"Lab for Interconnected Devices","img":"lid1.jpg"}]}'
-        var inactive_captions = '{"coords": [{"top":225,"left":450,"text":"Circuit Lounge","id":"circuit","img":"circuit_lounge.jpg"}, {"top":45,"left":170,"text":"Tektronix Lab","id":"tektronix","img":"tektronix1.jpg"}, {"top":85,"left":10,"text":"Engineering and Technology Management Department","id":"etm","img":"etm1.jpg"}, {"top":240,"left":10,"text":"<span uk-icon=\'icon: chevron-left\'></span>Harrison St. Exit","id":"n_exit","img":"harrison_exit.jpg"}, {"top":165,"left":300,"text":"Restrooms","id":"restroom"},{"top":25,"left":920,"text":"CS Tutor Lounge","id":"cs_lounge","img":"cs_tutor.jpg"}, {"top":185,"left":750,"text":"EB 86-01", "id":"eb8601"},{"top":270,"left":920,"text":"Portland State Aerospace Society (PSAS)","id":"psas","img":"psas.jpg"}]}'
+        var active_captions = '{"coords": [{"top":370,"left":170,"text":"NEAR Lab","id":"NEAR_lab","img":"near1.jpg"},{"top":75,"left":460,"text":"EE Fishbowl","id":"ee","img":"ee_fishbowl.jpg"},{"top":465,"left":535,"text":"Intelligent Robotics Lab","id":"robot_lab","img":"robotics1.jpg"},{"top":255,"left":860,"text":"Biomedical Signal Processing Lab","id":"Biomedical_lab","img":"biomedical2.jpg"},{"top":240,"left":1380,"text":"EB Stairs/Elevators","id":"stairs","img":"eb_stairs.jpg"}]}'
+        var inactive_captions = '{"coords": [{"top":285,"left":580,"text":"Circuit Lounge","id":"circuit","img":"circuit_lounge.jpg"}, {"top":45,"left":270,"text":"Tektronix Lab","id":"tektronix","img":"tektronix1.jpg"}, {"top":85,"left":10,"text":"Engineering and Technology Management Department","id":"etm","img":"etm1.jpg"}, {"top":260,"left":10,"text":"<span uk-icon=\'icon: chevron-left\'></span>To Harrison St. Exit","id":"n_exit","img":"harrison_exit.jpg"}, {"top":220,"left":380,"text":"Restrooms","id":"restroom"},{"top":25,"left":1160,"text":"CS Tutor Lounge","id":"cs_lounge","img":"cs_tutor.jpg"}, {"top":185,"left":950,"text":"EB 86-01", "id":"eb8601"},{"top":350,"left":1190,"text":"Portland State Aerospace Society (PSAS)","id":"psas","img":"psas.jpg"},{"top":125,"left":1250,"text":"Lab for Interconnected Devices","img":"lid1.jpg"}]}'
         var Markers = {
             fn: {
                 addMarkers: function() {
@@ -83,9 +96,9 @@
                         var id = obj.id;
                         var img = obj.img;
 
-                        var header = '<div class="uk-modal-header"><h2 class="uk-modal-title">'+text+'</h2></div>';
+                        var header = '<div class="uk-modal-header"><h2 class="uk-modal-title"><strong>'+text+'</strong></h2></div>';
                         var body = '<div class="uk-modal-body"><div><div class="uk-inline uk-visible-toggle uk-light"><img src="{% static 'main/images/locations' %}/'+img+'" alt="'+text+'"><a class="uk-position-center-left uk-position-small uk-hidden-hover uk-slidenav-large" href="#" uk-slidenav-previous></a><a class="uk-position-center-right uk-position-small uk-hidden-hover uk-slidenav-large" href="#" uk-slidenav-next></a></div></div></div>';
-                        var footer = '<p class="uk-text-center"><button class="uk-button uk-button-primary nav" type="button" value="'+id+'">Take me there</button><button class="uk-button uk-button-default cancelnav" type="button">Cancel</button></p><p class="uk-text-center"><button href="#" value="'+id+'" class="uk-button uk-button-link setpose">Set as current pose</button></p>';
+                        var footer = '<p class="uk-text-center"><button class="uk-button uk-button-primary nav" type="button" value="'+id+'">Take me there</button><button class="uk-button uk-button-default cancelnav" type="button">Cancel Nav</button><button class="uk-button uk-button-default uk-modal-close" type="button">Close</button></p><p class="uk-text-center"><button href="#" value="'+id+'" class="uk-button uk-button-link setpose">Set as current pose</button></p>';
                         var modal = '<div class="uk-modal-dialog uk-modal-body"><button class="uk-modal-close-default" type="button" uk-close></button>'+header+body+footer+'</div>';
 
                         $('<span class="marker"/>').css({
@@ -93,7 +106,7 @@
                             left: left
                         // }).html('<span class="caption">' + text + '</span>').
                         }).attr('uk-toggle','target: #'+id).html( text + '<div id="'+id+'" uk-modal>'+modal+'</div>').
-                        appendTo(target);
+                        appendTo(target);                        
                     }
 
                     $('button.nav').click(function() {
@@ -120,7 +133,7 @@
 
                         var header = '<div class="uk-modal-header"><h2 class="uk-modal-title">'+text+'</h2></div>';
                         var body = '<div class="uk-modal-body"><div><div class="uk-inline uk-visible-toggle uk-light"><img src="{% static 'main/images/locations' %}/'+img+'" alt="'+text+'"><a class="uk-position-center-left uk-position-small uk-hidden-hover uk-slidenav-large" href="#" uk-slidenav-previous></a><a class="uk-position-center-right uk-position-small uk-hidden-hover uk-slidenav-large" href="#" uk-slidenav-next></a></div></div></div>';
-                        var footer = '<p class="uk-text-center"><button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button></p>';
+                        var footer = '<p class="uk-text-center"><button class="uk-button uk-button-default uk-modal-close" type="button">Close</button></p>';
                         var modal = '<div class="uk-modal-dialog uk-modal-body"><button class="uk-modal-close-default" type="button" uk-close></button>'+header+body+footer+'</div>';
 
                         $('<span class="inactive_marker"/>').css({
@@ -130,6 +143,10 @@
                         }).attr('uk-toggle','target: #'+id).html( text + '<div id="'+id+'" uk-modal>'+modal+'</div>').
                         appendTo(target);
                     }
+                    // CSS Modifications for Modal
+                    $('.uk-modal-title').css('font', '1.5em');
+                    $('.uk-modal-dialog').css('width', '90%');
+                    $('.uk-button').addClass('uk-button-large').css('font-size', '1.5em').css('padding', '40px 40px');
                 },
                 showCaptions: function() {
                     $('span.marker').on('click', function() {
@@ -162,7 +179,7 @@
 {% endblock scripts %}
  
 {% block maincontent %}
-    <div class="uk-cover-container uk-height-large uk-overflow-auto">
+    <div class="uk-cover-container uk-height-large uk-overflow-auto" style="height: 624px;">
         <div id="image-wrapper">
             <img id="img_map" src="{% static 'main/images/hallways_all_90_small3.png' %}" alt="">
         </div>
@@ -192,8 +209,8 @@
     </script>
         <script type="text/javascript">
         var ros = new ROSLIB.Ros({
-            //url: 'ws://localhost:9090' // url to your rosbridge server
-            url: 'ws://192.168.1.2:9090' // url to your rosbridge server
+            url: 'ws://localhost:9090' // url to your rosbridge server
+            //url: 'ws://192.168.1.2:9090' // url to your rosbridge server
         });
 
         /*function callService(data) {
