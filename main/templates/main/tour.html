@@ -58,6 +58,9 @@
 {% endblock styles %}
 
 {% block scripts %}
+    <script src="{% static 'main/js/eventemitter2.min.js' %}"></script>
+    <script src="{% static 'main/js/roslib.min.js' %}"></script>
+
     <script type="text/javascript">
     // Ref: http://gabrieleromanato.name/jquery-create-image-markers-with-custom-data-attributes/
         var active_captions = '{"coords": [{"top":280,"left":130,"text":"NEAR Lab","id":"NEAR_lab","img":"near1.jpg"},{"top":85,"left":400,"text":"EE Fishbowl","id":"ee","img":"ee_fishbowl.jpg"},{"top":360,"left":435,"text":"Intelligent Robotics Lab","id":"robot_lab","img":"robotics1.jpg"},{"top":235,"left":670,"text":"Biomedical Signal Processing Lab","id":"Biomedical_lab","img":"biomedical2.jpg"},{"top":190,"left":1080,"text":"EB Stairs/Elevators","id":"stairs","img":"eb_stairs.jpg"},{"top":95,"left":950,"text":"Lab for Interconnected Devices","img":"lid1.jpg"}]}'
@@ -82,7 +85,7 @@
 
                         var header = '<div class="uk-modal-header"><h2 class="uk-modal-title">'+text+'</h2></div>';
                         var body = '<div class="uk-modal-body"><div><div class="uk-inline uk-visible-toggle uk-light"><img src="{% static 'main/images/locations' %}/'+img+'" alt="'+text+'"><a class="uk-position-center-left uk-position-small uk-hidden-hover uk-slidenav-large" href="#" uk-slidenav-previous></a><a class="uk-position-center-right uk-position-small uk-hidden-hover uk-slidenav-large" href="#" uk-slidenav-next></a></div></div></div>';
-                        var footer = '<p class="uk-text-center"><button class="uk-button uk-button-primary nav" type="button" value="'+id+'">Take me there</button><button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button></p><p class="uk-text-center"><button href="#" value="'+id+'" class="uk-button uk-button-link setpose">Set as current pose</button></p>';
+                        var footer = '<p class="uk-text-center"><button class="uk-button uk-button-primary nav" type="button" value="'+id+'">Take me there</button><button class="uk-button uk-button-default cancelnav" type="button">Cancel</button></p><p class="uk-text-center"><button href="#" value="'+id+'" class="uk-button uk-button-link setpose">Set as current pose</button></p>';
                         var modal = '<div class="uk-modal-dialog uk-modal-body"><button class="uk-modal-close-default" type="button" uk-close></button>'+header+body+footer+'</div>';
 
                         $('<span class="marker"/>').css({
@@ -98,6 +101,9 @@
                     });
                     $('.setpose').click(function() {
                         setPose($(this).val());
+                    });
+                    $('.cancelnav').click(function() {
+                        cancelNav();
                     });
 
                     var inactive_data = inactive_captions;
@@ -177,18 +183,20 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="http://cdn.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js">
-    </script>
+    <!--<script type="text/javascript" src="http://cdn.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js">
+    </script>-->
         <!-- include the roslibjs library ... required -->
-    <script type="text/javascript" src="http://cdn.robotwebtools.org/roslibjs/current/roslib.min.js">
+    <!--<script type="text/javascript" src="http://cdn.robotwebtools.org/roslibjs/current/roslib.min.js">-->
+    <!--<script src="{% static 'main/js/eventemitter2.min.js' %}"></script>
+    <script src="{% static 'main/js/roslib.min.js' %}"></script>-->
     </script>
         <script type="text/javascript">
         var ros = new ROSLIB.Ros({
-            url: 'ws://localhost:9090' // url to your rosbridge server
-            // url: 'ws://192.168.1.2:9090' // url to your rosbridge server
+            //url: 'ws://localhost:9090' // url to your rosbridge server
+            url: 'ws://192.168.1.2:9090' // url to your rosbridge server
         });
 
-        function callService(data) {
+        /*function callService(data) {
             console.log('Service called');
             console.log(data);
             var service = new ROSLIB.Service({
@@ -207,39 +215,39 @@
                 console.log('Result from calling test_service: ' + 
                 data + ': ' + result.output);
             });
-        }
-        // function callService(location) {
-        //     console.log('Service called')
-
-        //     var waypoint = new ROSLIB.Service({
-        //         ros: ros,
-        //         name: 'way_point',
-        //         serviceType: 'basics/Waypoint'
-        //     });
-
-        //     var request = new ROSLIB.ServiceRequest({
-        //         name: location
-        //     });
-
-        //     console.log(request)
-
-        //     waypoint.callService(request, function(result) {
-        //         console.log('Result for service call on ' +
-        //             waypoint.name +
-        //             ': ' +
-        //             result.result);
-        //     });
-        // }
-
-        function setPose(location) {
-            console.log('Pose Set')
+        }*/
+        function callService(location) {
+            console.log('Service called')
 
             var waypoint = new ROSLIB.Service({
                 ros: ros,
-                //name: 'set_pose',
-                //serviceType: 'basics/Waypoint'
-                name: 'waypoint_server',
-                serviceType: 'test_service/Waypoint'
+                name: 'way_point',
+                serviceType: 'basics/Waypoint'
+            });
+
+            var request = new ROSLIB.ServiceRequest({
+                name: location
+            });
+
+            console.log(request)
+
+            waypoint.callService(request, function(result) {
+                console.log('Result for service call on ' +
+                    waypoint.name +
+                    ': ' +
+                    result.result);
+            });
+        }
+
+        function setPose(location) {
+            console.log('Setting pose to '+location);
+
+            var waypoint = new ROSLIB.Service({
+                ros: ros,
+                name: 'set_pose',
+                serviceType: 'basics/Waypoint'
+                //name: 'waypoint_server',
+                //serviceType: 'test_service/Waypoint'
             });
 
             var request = new ROSLIB.ServiceRequest({
@@ -252,6 +260,25 @@
                 console.log('Result for service call on ' +
                     waypoint.name +
                     ': ' +
+                    result.result);
+            });
+        }
+
+        function cancelNav() {
+            console.log('Cancel Nav')
+
+            var waypoint = new ROSLIB.Service({
+                ros: ros,
+                name: 'cancel_waypoint',
+                serviceType: 'basics/Waypoint'
+            });
+
+            var request = new ROSLIB.ServiceRequest();
+
+            console.log(request);
+
+            waypoint.callService(request, function(result) {
+                console.log('Result for service call cancel_waypoint: ' +
                     result.result);
             });
         }
