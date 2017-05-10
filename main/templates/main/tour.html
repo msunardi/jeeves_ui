@@ -82,7 +82,7 @@
 
                         var header = '<div class="uk-modal-header"><h2 class="uk-modal-title">'+text+'</h2></div>';
                         var body = '<div class="uk-modal-body"><div><div class="uk-inline uk-visible-toggle uk-light"><img src="{% static 'main/images/locations' %}/'+img+'" alt="'+text+'"><a class="uk-position-center-left uk-position-small uk-hidden-hover uk-slidenav-large" href="#" uk-slidenav-previous></a><a class="uk-position-center-right uk-position-small uk-hidden-hover uk-slidenav-large" href="#" uk-slidenav-next></a></div></div></div>';
-                        var footer = '<p class="uk-text-center"><button class="uk-button uk-button-primary" type="button">Take me there</button><button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button></p>';
+                        var footer = '<p class="uk-text-center"><button class="uk-button uk-button-primary nav" type="button" value="'+id+'">Take me there</button><button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button></p><p class="uk-text-center"><button href="#" value="'+id+'" class="uk-button uk-button-link setpose">Set as current pose</button></p>';
                         var modal = '<div class="uk-modal-dialog uk-modal-body"><button class="uk-modal-close-default" type="button" uk-close></button>'+header+body+footer+'</div>';
 
                         $('<span class="marker"/>').css({
@@ -91,8 +91,14 @@
                         // }).html('<span class="caption">' + text + '</span>').
                         }).attr('uk-toggle','target: #'+id).html( text + '<div id="'+id+'" uk-modal>'+modal+'</div>').
                         appendTo(target);
-
                     }
+
+                    $('button.nav').click(function() {
+                        callService($(this).val());
+                    });
+                    $('.setpose').click(function() {
+                        setPose($(this).val());
+                    });
 
                     var inactive_data = inactive_captions;
                     console.log(inactive_data);
@@ -171,4 +177,83 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript" src="http://cdn.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js">
+    </script>
+        <!-- include the roslibjs library ... required -->
+    <script type="text/javascript" src="http://cdn.robotwebtools.org/roslibjs/current/roslib.min.js">
+    </script>
+        <script type="text/javascript">
+        var ros = new ROSLIB.Ros({
+            url: 'ws://localhost:9090' // url to your rosbridge server
+            // url: 'ws://192.168.1.2:9090' // url to your rosbridge server
+        });
+
+        function callService(data) {
+            console.log('Service called');
+            console.log(data);
+            var service = new ROSLIB.Service({
+                ros: ros,
+                name: 'test_service',
+                serviceType: 'test_service/Foo'
+            });
+
+            var request = new ROSLIB.ServiceRequest({
+                input: data
+            });
+
+            console.log(request);
+
+            service.callService(request, function(result) {
+                console.log('Result from calling test_service: ' + 
+                data + ': ' + result.output);
+            });
+        }
+        // function callService(location) {
+        //     console.log('Service called')
+
+        //     var waypoint = new ROSLIB.Service({
+        //         ros: ros,
+        //         name: 'way_point',
+        //         serviceType: 'basics/Waypoint'
+        //     });
+
+        //     var request = new ROSLIB.ServiceRequest({
+        //         name: location
+        //     });
+
+        //     console.log(request)
+
+        //     waypoint.callService(request, function(result) {
+        //         console.log('Result for service call on ' +
+        //             waypoint.name +
+        //             ': ' +
+        //             result.result);
+        //     });
+        // }
+
+        function setPose(location) {
+            console.log('Pose Set')
+
+            var waypoint = new ROSLIB.Service({
+                ros: ros,
+                //name: 'set_pose',
+                //serviceType: 'basics/Waypoint'
+                name: 'waypoint_server',
+                serviceType: 'test_service/Waypoint'
+            });
+
+            var request = new ROSLIB.ServiceRequest({
+                name: location
+            });
+
+            console.log(request);
+
+            waypoint.callService(request, function(result) {
+                console.log('Result for service call on ' +
+                    waypoint.name +
+                    ': ' +
+                    result.result);
+            });
+        }
+    </script>
 {% endblock maincontent %} 
