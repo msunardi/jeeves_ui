@@ -9,10 +9,10 @@ def tour(request):
     return render(request, 'main/tour.html', {'tour_active': True})
 
 def aboutpsu(request):
-    return render(request, 'main/uikit-aboutpsumcecs.html', {'aboutpsu_active': True})
+    return render(request, 'main/aboutpsumcecs.html', {'aboutpsu_active': True})
 
 def vision(request):
-    return render(request, 'main/vision.html', {'vision_active': True, 'video_server': 'http://192.168.1.51:8080'})
+    return render(request, 'main/vision.html', {'vision_active': True, 'video_server': 'http://192.168.1.4:8080'})
 
 def dashboard(request):
     return render(request, 'main/dashboard.html', {'dashboard_active': True})
