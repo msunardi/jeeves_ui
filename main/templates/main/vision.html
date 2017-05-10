@@ -1,6 +1,7 @@
 {% extends 'main/base.html' %}
 {% load static %}
 
+
 {% block maincontent %}
         <div class="uk-cover-container uk-height-large">
             <img id="monitor" class="center-block" src="{{ video_server }}/stream?topic=/camera/rgb/image_rect_color" alt="" uk-cover>
@@ -19,18 +20,20 @@
                     </fieldset>
                 </form></div>
                 <script>
+                $("#camera").change(function() {
                     var stream_server = '{{ video_server }}/stream?topic=';
-                    $('.camera-option').click(function() {
-                        var select_val = $('select').val();
-                        var alt = $(this).attr('alt');
-                        console.log(select_val);
-                        console.log(alt);
-                        // add &timestamp to trigger GET - otherwise image won't refresh/update
-                        $('img#monitor').attr('src', stream_server+select_val+'&timestamp='+ new Date().getTime());
-                        $('img#monitor').attr('alt', alt);
-                        console.log($('img#monitor').attr('src'));
+                    $("select option:selected").each(function() {
+                        stream_server += $(this).val();
                     });
-                    
+                    var alt = $(this).attr('alt');
+                    console.log(stream_server);
+                    console.log(alt);
+                        // add &timestamp to trigger GET - otherwise image won't refresh/update
+                    //$('img#monitor').attr('src', stream_server+select_val+'&timestamp='+ new Date().getTime());
+                    $('img#monitor').attr('src', stream_server+'&timestamp='+ new Date().getTime());
+                    $('img#monitor').attr('alt', alt);
+                    console.log($('img#monitor').attr('src'));
+                }).change();
                 </script>
             </div>
         </div>
