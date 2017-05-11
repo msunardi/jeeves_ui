@@ -117,10 +117,10 @@
 		                $(this).blur();
         		        UIkit.modal.confirm('<p class="uk-text-center">You want to go to <br> <strong>'+loc+'</strong><br/> Please confirm.</p>').then(function() {
                 		    console.log('Confirmed.' + val)
-                            callService(val);
+                            callService(val, url);
 
                             // Immediately redirect
-                            window.location.href = url
+                            //window.location.href = url
 		                }, function () {
                             console.log('Canceled.')
 		                });
@@ -229,8 +229,8 @@
     </script>
         <script type="text/javascript">
         var ros = new ROSLIB.Ros({
-            url: 'ws://localhost:9090' // url to your rosbridge server
-            // url: 'ws://192.168.1.2:9090' // url to your rosbridge server
+            // url: 'ws://localhost:9090' // url to your rosbridge server
+            url: 'ws://192.168.1.2:9090' // url to your rosbridge server
         });
 
         /*function callService(data) {
@@ -253,7 +253,7 @@
                 data + ': ' + result.output);
             });
         }*/
-        function callService(location) {
+        function callService(location, url) {
             console.log('Arbiter Service called')
 
             var arbiter = new ROSLIB.Service({
@@ -275,6 +275,7 @@
                     ': ' +
                     result.result);
             });
+            window.location.href = url
         }
         // function callService(location) {
         //     console.log('Service called')
