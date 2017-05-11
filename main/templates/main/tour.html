@@ -117,7 +117,8 @@
 		                $(this).blur();
         		        UIkit.modal.confirm('<p class="uk-text-center">You want to go to <br> <strong>'+loc+'</strong><br/> Please confirm.</p>').then(function() {
                 		    console.log('Confirmed.' + val)
-                            callService(val, url);
+                            callArbiter(val, url, loc);
+                            callService(val);
 
                             // Immediately redirect
                             //window.location.href = url
@@ -253,7 +254,7 @@
                 data + ': ' + result.output);
             });
         }*/
-        function callService(location, url) {
+        function callArbiter(location, url, desc) {
             console.log('Arbiter Service called')
 
             var arbiter = new ROSLIB.Service({
@@ -265,40 +266,42 @@
             var request = new ROSLIB.ServiceRequest({
                 itype: 'nav',
                 value: location,
+                description: desc
             });
 
             console.log(request)
 
             arbiter.callService(request, function(result) {
                 console.log('Result for service call ' + itype + ' on ' +
-                    arbiter.value +
+                    arbiter.description + '(' + arbiter.value + ')' + 
                     ': ' +
                     result.result);
             });
+            console.log('foo')
             window.location.href = url
         }
-        // function callService(location) {
-        //     console.log('Service called')
+        function callService(location) {
+            console.log('Service called')
 
-        //     var waypoint = new ROSLIB.Service({
-        //         ros: ros,
-        //         name: 'way_point',
-        //         serviceType: 'basics/Waypoint'
-        //     });
+            var waypoint = new ROSLIB.Service({
+                ros: ros,
+                name: 'way_point',
+                serviceType: 'basics/Waypoint'
+            });
 
-        //     var request = new ROSLIB.ServiceRequest({
-        //         name: location
-        //     });
+            var request = new ROSLIB.ServiceRequest({
+                name: location
+            });
 
-        //     console.log(request)
+            console.log(request)
 
-        //     waypoint.callService(request, function(result) {
-        //         console.log('Result for service call on ' +
-        //             waypoint.name +
-        //             ': ' +
-        //             result.result);
-        //     });
-        // }
+            waypoint.callService(request, function(result) {
+                console.log('Result for service call on ' +
+                    waypoint.name +
+                    ': ' +
+                    result.result);
+            });
+        }
 
         function setPose(location) {
             console.log('Setting pose to '+location);
