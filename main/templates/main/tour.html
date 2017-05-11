@@ -229,8 +229,8 @@
     </script>
         <script type="text/javascript">
         var ros = new ROSLIB.Ros({
-            // url: 'ws://localhost:9090' // url to your rosbridge server
-            url: 'ws://192.168.1.2:9090' // url to your rosbridge server
+            url: 'ws://localhost:9090' // url to your rosbridge server
+            // url: 'ws://192.168.1.2:9090' // url to your rosbridge server
         });
 
         /*function callService(data) {
@@ -254,27 +254,50 @@
             });
         }*/
         function callService(location) {
-            console.log('Service called')
+            console.log('Arbiter Service called')
 
-            var waypoint = new ROSLIB.Service({
+            var arbiter = new ROSLIB.Service({
                 ros: ros,
-                name: 'way_point',
-                serviceType: 'basics/Waypoint'
+                name: 'arbiter_server',
+                serviceType: 'arbiter/Interact'
             });
 
             var request = new ROSLIB.ServiceRequest({
-                name: location
+                itype: 'nav',
+                value: location,
             });
 
             console.log(request)
 
-            waypoint.callService(request, function(result) {
-                console.log('Result for service call on ' +
-                    waypoint.name +
+            arbiter.callService(request, function(result) {
+                console.log('Result for service call ' + itype + ' on ' +
+                    arbiter.value +
                     ': ' +
                     result.result);
             });
         }
+        // function callService(location) {
+        //     console.log('Service called')
+
+        //     var waypoint = new ROSLIB.Service({
+        //         ros: ros,
+        //         name: 'way_point',
+        //         serviceType: 'basics/Waypoint'
+        //     });
+
+        //     var request = new ROSLIB.ServiceRequest({
+        //         name: location
+        //     });
+
+        //     console.log(request)
+
+        //     waypoint.callService(request, function(result) {
+        //         console.log('Result for service call on ' +
+        //             waypoint.name +
+        //             ': ' +
+        //             result.result);
+        //     });
+        // }
 
         function setPose(location) {
             console.log('Setting pose to '+location);
