@@ -8,6 +8,15 @@ def index(request):
 def tour(request):
     return render(request, 'main/tour.html', {'tour_active': True})
 
+def waypoint(request, nav):
+    locations = {'ee': ('EE Fishbowl', 'ee_fishbowl.jpg'), \
+                 'NEAR_lab': ('NEAR Lab', 'near1.jpg'), \
+                 'robot_lab': ('Intelligent Robotics Lab', 'robotics1.jpg'), \
+                 'Biomedical_lab': ('Biomedical Signal Processing Lab', 'biomedical2.jpg'), \
+                 'stairs': ('EB Stairs/Elevators', 'eb_stairs.jpg')}
+    location_name, image = locations[nav]
+    return render(request, 'main/waypoint.html', {'location_name': location_name, 'image': image})
+
 def aboutpsu(request):
     return render(request, 'main/aboutpsumcecs.html', {'aboutpsu_active': True})
 

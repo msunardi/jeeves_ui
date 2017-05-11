@@ -1,0 +1,62 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block scripts %}
+<script type='text/javascript'>
+    $(document).ready(function(){
+        $('.back').click(function(){
+            parent.history.back();
+            return false;
+        });
+    });
+</script>
+<script src="{% static 'main/js/eventemitter2.min.js' %}"></script>
+<script src="{% static 'main/js/roslib.min.js' %}"></script>
+<script type="text/javascript">
+    var ros = new ROSLIB.Ros({
+        url: 'ws://localhost:9090' // url to your rosbridge server
+        // url: 'ws://192.168.1.2:9090' // url to your rosbridge server
+    });
+    function cancelNav() {
+        console.log('Cancel Nav')
+
+        var waypoint = new ROSLIB.Service({
+            ros: ros,
+            name: 'cancel_waypoint',
+            serviceType: 'basics/Waypoint'
+        });
+
+        var request = new ROSLIB.ServiceRequest();
+
+        console.log(request);
+
+        waypoint.callService(request, function(result) {
+            console.log('Result for service call cancel_waypoint: ' +
+                result.result);
+        });
+    }
+    $(document).ready(function() {
+        $('.cancelnav').click(function() {
+            cancelNav();
+        });
+    });
+    
+</script>
+{% endblock scripts %}
+
+{% block maincontent %}
+    <div class="uk-cover-container" uk-height-viewport>
+        <img src="{% static '' %}main/images/locations/{{ image }}" alt="" uk-cover>
+        <div class="uk-overlay uk-overlay-primary uk-light uk-position-bottom" style="opacity:0.6;">
+            <h1 class="uk-heading-primary">{{ location_name }}</h1>
+                
+                
+                <!--<hr>
+                <p class="lead">I am your Tour Guide Robot for the Maseeh College of Engineering and Computer Science at<br/>
+                Portland State University.</p>-->
+        </div>
+    </div>
+    <p class="uk-text-center">Click here to cancel navigation to {{ location_name }} {{ img }}</p>
+    <p class="uk-text-center"><button class="uk-button uk-button-danger cancelnav" type="button">Cancel Nav</button>
+    <button class="uk-button uk-button-secondary back" type="button">Return to previous view</button></p>
+{% endblock maincontent %}
