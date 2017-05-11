@@ -64,10 +64,6 @@
             display: none;
         }
 
-        .uk-button {
-            padding: 40px 40px;
-			font-size: 2em;
-        }
     </style>
 {% endblock styles %}
 
@@ -99,7 +95,7 @@
 
                         var header = '<div class="uk-modal-header"><h2 class="uk-modal-title"><strong>'+text+'</strong></h2></div>';
                         var body = '<div class="uk-modal-body"><div><div class="uk-inline uk-visible-toggle uk-light"><img src="{% static 'main/images/locations' %}/'+img+'" alt="'+text+'"><a class="uk-position-center-left uk-position-small uk-hidden-hover uk-slidenav-large" href="#" uk-slidenav-previous></a><a class="uk-position-center-right uk-position-small uk-hidden-hover uk-slidenav-large" href="#" uk-slidenav-next></a></div></div></div>';
-                        var footer = '<p class="uk-text-center"><button class="uk-button uk-button-primary nav" type="button" value="'+id+'" data-location="'+text+'">Take me there</button><button class="uk-button uk-button-default cancelnav" type="button">Cancel Nav</button><button class="uk-button uk-button-default uk-modal-close" type="button">Close</button></p><p class="uk-text-center"><button href="#" value="'+id+'" class="uk-button uk-button-link setpose">Set as current pose</button></p>';
+                        var footer = '<p class="uk-text-center"><button class="uk-button uk-button-primary nav" type="button" value="'+id+'" data-location="'+text+'">Take me there</button><button class="uk-button uk-button-danger cancelnav" type="button">Cancel Nav</button><button class="uk-button uk-button-secondary uk-modal-close" type="button">Close</button></p><p class="uk-text-center"><button href="#" value="'+id+'" class="uk-button uk-button-link setpose">Set as current pose</button></p>';
                         var modal = '<div class="uk-modal-dialog uk-modal-body"><button class="uk-modal-close-default" type="button" uk-close></button>'+header+body+footer+'</div>';
 
                         $('<span class="marker" aria-labelledby="Navigation waypoint" />').css({
@@ -113,12 +109,20 @@
                			 e.preventDefault();
                         var loc = $(this).attr('data-location');
 						var val = $(this).val();
+
+                        // Workaround: http://stackoverflow.com/a/43290584/1019170
+                        var url = "{% url 'main:waypoint' 'foo' %}";
+                        url = url.replace('foo', val)
+
 		                $(this).blur();
         		        UIkit.modal.confirm('<p class="uk-text-center">You want to go to <br> <strong>'+loc+'</strong><br/> Please confirm.</p>').then(function() {
                 		    console.log('Confirmed.' + val)
                             callService(val);
+
+                            // Immediately redirect
+                            window.location.href = url
 		                }, function () {
-        		            console.log('Rejected.')
+                            console.log('Canceled.')
 		                });
 						
 		            });
@@ -225,7 +229,7 @@
     </script>
         <script type="text/javascript">
         var ros = new ROSLIB.Ros({
-            //url: 'ws://localhost:9090' // url to your rosbridge server
+            // url: 'ws://localhost:9090' // url to your rosbridge server
             url: 'ws://192.168.1.2:9090' // url to your rosbridge server
         });
 
