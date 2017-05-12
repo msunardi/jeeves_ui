@@ -341,10 +341,27 @@
 
             console.log(request);
 
-            waypoint.callService(request, function(result) {
+            /*waypoint.callService(request, function(result) {
                 console.log('Result for service call cancel_waypoint: ' +
                     result.result);
+            });*/
+            
+            publishEncoded(doneTopic, 'yes');
+        }
+        var doneTopic = new ROSLIB.Topic({
+            ros: ros,
+            name: '/done', // use a sensible namespace
+            messageType: 'std_msgs/String' //Create a pose object (geometry_msg(s)/Pose) 
+
+        });
+
+        function publishEncoded(topic, obj) {
+            var msg = new ROSLIB.Message({
+
+                data: JSON.stringify(obj)
             });
+            topic.publish(msg);
+            console.log('Publishing '+ obj + ' to topic: ' + topic.name);
         }
     </script>
 {% endblock maincontent %} 

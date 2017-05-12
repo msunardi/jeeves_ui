@@ -14,8 +14,8 @@
 <script src="{% static 'main/js/roslib.min.js' %}"></script>
 <script type="text/javascript">
     var ros = new ROSLIB.Ros({
-        url: 'ws://localhost:9090' // url to your rosbridge server
-        // url: 'ws://192.168.1.2:9090' // url to your rosbridge server
+        // url: 'ws://localhost:9090' // url to your rosbridge server
+        url: 'ws://192.168.1.2:9090' // url to your rosbridge server
     });
     function cancelNav() {
         console.log('Cancel Nav')
@@ -34,6 +34,22 @@
             console.log('Result for service call cancel_waypoint: ' +
                 result.result);
         });
+
+        publishEncoded(doneTopic, 'yes');
+    }
+    var doneTopic = new ROSLIB.Topic({
+        ros: ros,
+        name: '/done', // use a sensible namespace
+        messageType: 'std_msgs/String' //Create a pose object (geometry_msg(s)/Pose) 
+
+    });
+
+    function publishEncoded(topic, obj) {
+        var msg = new ROSLIB.Message({
+            data: JSON.stringify(obj)
+        });
+        topic.publish(msg);
+        console.log('Publishing '+ obj + ' to topic: ' + topic.name);
     }
     $(document).ready(function() {
         $('.cancelnav').click(function() {
