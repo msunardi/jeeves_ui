@@ -10,9 +10,9 @@
 {% endblock styles %}
 
 {% block maincontent %}
-        <div class="uk-cover-container uk-height-large">
+        <div class="uk-cover-container" uk-height-viewport>
             <img id="monitor" class="center-block" src="{{ video_server }}/stream?topic=/camera/rgb/image_rect_color" alt="" uk-cover>
-            <div class="uk-overlay uk-overlay-cover uk-default uk-position-bottom">
+            <div class="uk-overlay uk-overlay-primary uk-light uk-position-bottom" style="opacity:0.6;">
                 <h1 class="uk-heading-primary">Jeeves Vision 1.0</h1>
                 <div><form>
                     <fieldset class="uk-fieldset">
