@@ -95,7 +95,7 @@
 
                         var header = '<div class="uk-modal-header"><h2 class="uk-modal-title"><strong>'+text+'</strong></h2></div>';
                         var body = '<div class="uk-modal-body"><div><div class="uk-inline uk-visible-toggle uk-light"><img src="{% static 'main/images/locations' %}/'+img+'" alt="'+text+'"><a class="uk-position-center-left uk-position-small uk-hidden-hover uk-slidenav-large" href="#" uk-slidenav-previous></a><a class="uk-position-center-right uk-position-small uk-hidden-hover uk-slidenav-large" href="#" uk-slidenav-next></a></div></div></div>';
-                        var footer = '<p class="uk-text-center"><button class="uk-button uk-button-primary nav" type="button" value="'+id+'" data-location="'+text+'">Take me there</button><button class="uk-button uk-button-danger cancelnav" type="button">Cancel Nav</button><button class="uk-button uk-button-secondary uk-modal-close" type="button">Close</button></p><p class="uk-text-center"><button href="#" value="'+id+'" class="uk-button uk-button-link setpose">Set as current pose</button></p>';
+                        var footer = '<p class="uk-text-center"><button class="uk-button uk-button-primary navinfo" type="button" value="'+id+'" data-location="'+text+'">Info</button><button class="uk-button uk-button-primary nav" type="button" value="'+id+'" data-location="'+text+'">Take me there</button><button class="uk-button uk-button-danger cancelnav" type="button">Cancel Nav</button><button class="uk-button uk-button-secondary uk-modal-close" type="button">Close</button></p><p class="uk-text-center"><button href="#" value="'+id+'" class="uk-button uk-button-link setpose">Set as current pose</button></p>';
                         var modal = '<div class="uk-modal-dialog uk-modal-body"><button class="uk-modal-close-default" type="button" uk-close></button>'+header+body+footer+'</div>';
 
                         $('<span class="marker" aria-labelledby="Navigation waypoint" />').css({
@@ -105,10 +105,15 @@
                         }).attr('uk-toggle','target: #'+id).html( text + '<div id="'+id+'" uk-modal>'+modal+'</div>').
                         appendTo(target);                        
                     }
-					$('button.nav').on('click', function (e) {
-               			 e.preventDefault();
+                    $('.navinfo').click(function() {
                         var loc = $(this).attr('data-location');
-						var val = $(this).val();
+			var val = $(this).val();
+                        callArbiterInfo(val, loc) 
+                    });
+		    $('button.nav').on('click', function (e) {
+               		e.preventDefault();
+                        var loc = $(this).attr('data-location');
+			var val = $(this).val();
 
                         // Workaround: http://stackoverflow.com/a/43290584/1019170
                         var url = "{% url 'main:waypoint' 'foo' %}";
@@ -211,6 +216,7 @@
             <div class="uk-card uk-card-default uk-card-body">
                 <h3 class="uk-card-title">How To</h3>
                 <p>Click on a location to learn more about it. Try the <strong>Intelligent Robotics Lab</strong>. If you want to go to that location, click on the <strong>TAKE ME THERE</strong> button.</p>
+                <p>To make me stop at any time, click on the <strong>CANCEL NAV</strong> button.</p>
             </div>
         </div>
         <div>
@@ -254,6 +260,31 @@
                 data + ': ' + result.output);
             });
         }*/
+        function callArbiterInfo(location, desc) {
+            console.log('Arbiter Service called')
+
+            var arbiter = new ROSLIB.Service({
+                ros: ros,
+                name: 'arbiter_server',
+                serviceType: 'arbiter/Interact'
+            });
+
+            var request = new ROSLIB.ServiceRequest({
+                itype: 'info',
+                value: location,
+                description: desc
+            });
+
+            console.log(request)
+
+            arbiter.callService(request, function(result) {
+                console.log('Result for service call ' + itype + ' on ' +
+                    arbiter.description + '(' + arbiter.value + ')' + 
+                    ': ' +
+                    result.result);
+            });
+            console.log('arbiter-info')
+        }
         function callArbiter(location, url, desc) {
             console.log('Arbiter Service called')
 
