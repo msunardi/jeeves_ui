@@ -31,3 +31,6 @@ def aboutme(request):
 
 def exmode(request):
     return render(request, 'main/uikit-exmode.html', {'exmode_active': True})
+
+def console(request):
+    return render(request, 'main/console.html')

@@ -1,0 +1,407 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block scripts %}    
+    <script src="{% static 'main/js/eventemitter2.min.js' %}"></script>
+    <script src="{% static 'main/js/roslib.min.js' %}"></script>
+    <script src="{% static 'main/js/yaml.min.js' %}"></script>
+    <script type="text/javascript">
+
+        var seen = {};
+
+        // ROS SETUP
+        var ros = new ROSLIB.Ros({
+            // url: 'ws://localhost:9090' // url to your rosbridge server
+            url: 'ws://192.168.1.2:9090' // url to your rosbridge server
+        });
+
+        ros.on('connection', function() {
+            console.log('Connected to websocket server.');
+        });
+
+        ros.on('error', function(error) {
+            console.log('Error connecting to websocket server: ', error);
+        });
+
+        ros.on('close', function() {
+            console.log('Connection to websocket server closed.');
+        });
+
+        // ROS TOPICS
+        var exampleTopic = new ROSLIB.Topic({
+            ros: ros,
+            name: '/test_topic', // use a sensible namespace
+            messageType: 'std_msgs/String' //Create a pose object (geometry_msg(s)/Pose)
+
+        });
+
+        var rosout = new ROSLIB.Topic({
+            ros: ros,
+            name: '/rosout', // use a sensible namespace
+            messageType: 'rosgraph_msgs/Log' //Create a pose object (geometry_msg(s)/Pose)
+
+        });
+
+        var battery = new ROSLIB.Topic({
+            ros: ros,
+            name: '/battery_status', // use a sensible namespace
+            messageType: 'battery_monitor/BatteryStatus' //Create a pose object (geometry_msg(s)/Pose)
+
+        });
+
+        var diagnostics = new ROSLIB.Topic({
+            ros: ros,
+            name: '/diagnostics',
+            // name: '*/sick_lms_200 (http://192.168.1.2:48290/',
+            // name: '*/camera/camera_nodelet_manager (http://192.168.1.2:59716/'
+            // name: '* /joystick (http://192.168.1.2:57493/',
+            messageType: 'diagnostic_msgs/DiagnosticArray'
+
+        });
+
+        var joy = new ROSLIB.Topic({
+            ros: ros,
+            name: '/joy',
+            messageType: 'sensor_msgs/Joy'
+        })
+
+        // SUBSCRIBERS
+        battery.subscribe(function(msg) {
+            $('#topic_data').text(msg.amps + msg.amp_hours);
+            $('#amps').text(msg.amps);
+            $('#amphours').text(msg.amp_hours);
+        });
+
+        exampleTopic.subscribe(function(msg) {
+            // console.log(msg);
+            $('#testTopic').text(msg.data);
+        });
+
+        rosout.subscribe(function(msg) {
+            // console.log(msg);
+            var name_arr = msg.name.split(':');
+            var node_name = name_arr[0];
+            if(haveseen(node_name)) {
+                // console.log("Ignoring duplicate node: "+node_name);
+                return;
+            }
+
+            var level = 'uk-text-default';
+            var message = '<div class="uk-preserve-color"><span>'+msg.name+': </span><span uk-icon="icon: info" title="'+msg.msg+'" uk-tooltip="pos: right" style="padding: 5px 0;">'+getLevel(msg.level)+'</span></div>';
+            $('#testTopic').attr('class',level).append(message);
+        });
+
+        joy.subscribe(function(msg) {
+            // console.log(msg);var name_arr = name.split(':');
+            var id = name_arr[0] + '-modal';
+            var axes = msg.axes;
+            var buttons = msg.buttons;
+            var axes_html = [];
+            if (axes[0] > 0) {
+                axes_html.push("<p>Left analog: left (" + axes[0] + ")</p>");
+            } else if (axes[0] < 0) {
+                axes_html.push("<p>Left analog: right (" + axes[0] + ")</p>");
+            } else if (axes[1] > 0) {
+                axes_html.push("<p>Left analog: up (" + axes[1] + ")</p>");
+            } else if (axes[1] < 0) {
+                axes_html.push("<p>Left analog: down (" + axes[1] + ")</p>");
+            } else if (axes[2] > 0) {
+                axes_html.push("<p>Right analog: left (" + axes[2] + ")</p>");
+            } else if (axes[2] < 0) {
+                axes_html.push("<p>Right analog: right (" + axes[2] + ")</p>");
+            } else if (axes[3] > 0) {
+                axes_html.push("<p>Right analog: up (" + axes[3] + ")</p>");
+            } else if (axes[3] < 0) {
+                axes_html.push("<p>Right analog: down (" + axes[3] + ")</p>");
+            } else if (axes[4] > 0) {
+                axes_html.push("<p>D-pad: left (" + axes[4] + ")</p>");
+            } else if (axes[4] < 0) {
+                axes_html.push("<p>D-pad: right (" + axes[4] + ")</p>");
+            } else if (axes[5] > 0) {
+                axes_html.push("<p>D-pad: up (" + axes[5] + ")</p>");
+            } else if (axes[5] < 0) {
+                axes_html.push("<p>D-pad: down (" + axes[5] + ")</p>");
+            } else {
+                axes_html.push("<p>No axes activity</p>");
+            }
+            $('#joy_axes').html(axes_html.join(""));
+            $('#joy_buttons').text(buttons);
+        });
+
+        diagnostics.subscribe(function(msg) {
+            // console.log('Diagnostics:');
+            // console.log(msg);
+            // if(!(msg.hasOwnProperty('status'))) 
+            //     return;
+            var name = '';
+            var levelbyte = '';
+            var message = '';
+            var hardware_id = '';
+            var values = '';
+            var value_text = "";
+
+            if(!msg.status.length) {
+                name = msg.status.name;
+                levelbyte = msg.status.level;
+                message = msg.status.message;
+                hardware_id = msg.status.hardware_id;
+                values = msg.status.values;
+                value_text = "";
+                status = "OK";
+            } else {
+                if (!msg.status[0].hasOwnProperty('name'))
+                    return;
+                name = msg.status[0].name;
+                levelbyte = msg.status[0].level;
+                message = msg.status[0].message;
+                hardware_id = msg.status[0].hardware_id;
+                values = msg.status[0].values;
+                value_text = "";
+                status = "OK";
+            }
+            // for (i = 0; i < values.length; i++) {
+            //     value_text += values[i].key + "/" + values[i].value + "\n";
+            // }
+            var newHTML = $.map(values, function(val){
+                return('<span>' + val.key + ': ' + val.value + '</span><br/>');
+            });
+            $('#topic_data').text("/diagnostics");
+            $('#diagnostic_data').text(name);
+            if (levelbyte == '0') {
+                status = "<span class='uk-text-success'>OK</span>";
+            } else if (levelbyte == '1') {
+                status = "<span class='uk-text-warning'>WARN</span>";
+            } else if (levelbyte == '2') {
+                status = "<span class='uk-text-danger'>ERROR</span>";
+            } else if (levelbyte == '3') {
+                status = "<span class='uk-text-warning'>STALE</span>";
+            } else {
+                status = "<span class='uk-text-warning'>UNKNOWN</span>";
+            }
+            // $('#status').text(status);
+            // $('#message').text(message);
+            // $('#hardware_id').text(hardware_id);
+            // $('#values').html(newHTML.join(""));
+            if (!name) // If doesn't have name property, ignore the message.
+            {
+                return;
+            }
+            var name_arr = name.split(':');
+            var id = name_arr[0] + '-modal';
+            var header = '<div class="uk-modal-header"><h2 class="uk-modal-title">'+name+'</h2></div>';
+            var body = '<div class="uk-modal-body">'+newHTML.join("")+'</div>';
+            var footer = '<p class="uk-text-center"><button class="uk-button uk-button-primary uk-modal-close" type="button">Close</button></p>';
+            var modal = '<div class="uk-modal-dialog uk-modal-body"><button class="uk-modal-close-default" type="button" uk-close></button>'+header+body+footer+'</div>';
+            var x_modal = '<button class="uk-button uk-button-primary uk-margin-small-right" type="button" uk-toggle="target: #'+id+'">Info</button><div id="'+id+'" uk-modal>'+modal+'</div>';
+
+            var table_entry = '<tr class="uk-preserve-color"><td>'+name+'</td><td>'+status+'</td><td>'+message+'</td><td>'+hardware_id+'</td><td>'+x_modal+'</td></tr>';
+
+            // console.log(table_entry);
+
+            $('#devices-table-body').html(table_entry);
+        });
+
+        // SERVICES
+        var get_waypoints = new ROSLIB.Service({
+                ros: ros,
+                name: 'waypoint_manager/get_waypoints',
+                serviceType: 'jeeves_2d_nav/GetWaypoints'
+        });
+        
+
+        // CALLBACKS AND OTHER FUNCTIONS
+        function publishEncoded(topic, obj) {
+            var msg = new ROSLIB.Message({
+
+                data: JSON.stringify(obj)
+            });
+            topic.publish(msg);
+        }
+
+        function decodeMessage(msg) {
+            return JSON.parse(msg.data);
+        }        
+
+        function getLevel(lev) {
+            var status = "UNKNOWN";
+            if (lev == 0) {
+                status = "OK";
+            } else if (lev == 1) {
+                status = "WARN";
+            } else if (lev == 2) {
+                status = "ERROR";
+            } else if (lev == 3) {
+                status = "STALE";
+            } //else {
+                //status = "UNKNOWN";
+            //}
+            return status;
+        }
+
+        function haveseen(x) {
+            if(seen[x])
+                return true;
+            seen[x] = true;
+            return false;            
+        }
+
+        function get_get_waypoints() {
+            var request = new ROSLIB.ServiceRequest();
+
+            console.log(request)
+
+            get_waypoints.callService(request, function(result) {
+                var wp = YAML.parse(result.waypoints);
+                console.log('Result for service call get_waypoints: ' +
+                    result.waypoints);
+                console.log(wp[0]);
+                var dtdd = '';
+                var target = $('#waypoints');
+
+                $.each(wp, function(key, data) {
+                    console.log("DT: " + data.name);
+                    if (data.enabled) {
+                        dtdd += "<dt>" + data.name + "</dt><dd>x: " + data.x + "<br/>y: " + data.y + "<br/>&Theta;: " + data.theta + "</dd>";
+                    }
+                });
+                $('dl#waypoints').html(dtdd);
+            });
+            console.log('get_waypoints')
+        }
+
+        $(document).ready(function() {
+            console.log("Hello there!");
+            get_get_waypoints();
+        })
+    </script>
+{% endblock scripts %}
+
+{% block maincontent %}
+    <div class="uk-section uk-section-small uk-section-default uk-light uk-margin-remove uk-preserve-color">
+        
+        <div class="uk-container">
+            <a name="system"></a>
+            <h2>Navigation Stuff</h2>
+    
+            <div class="uk-grid-match uk-child-width-expand@m" uk-grid>
+                <div>
+                    <div class="uk-card uk-card-default uk-card-hover uk-card-body">
+                        <div class="uk-card-badge uk-label"><span uk-icon="icon: cog; ratio: 2;"></span></div>
+                        <h3 class="uk-card-title">Waypoints</h3>
+                        <dl class="uk-description-list" id="waypoints">
+                            <!--<dt>Amps:</dt><dd><span id="amps"></span></dd>
+                            <dt>Amp Hours:</dt><dd><span id="amphours"></span></dd>-->
+                        </dl>
+                    </div>
+                </div>
+                <div>
+                    <div class="uk-card uk-card-default uk-card-hover uk-card-body">
+                        <div class="uk-card-badge uk-label"><span uk-icon="icon: bolt; ratio: 2;"></span></div>
+                        <h3 class="uk-card-title">Set New Waypoint</h3>
+                        <div>
+                            <form class="uk-form-horizontal">
+                                <!--<fieldset class="uk-fieldset">-->
+                                    <div>
+                                        <label class="uk-form-label"></label>
+                                        <div class="uk-form-controls">
+                                            <input class="uk-input" id="form-horizontal-text" type="text" placeholder="Place name">
+                                        </div>
+                                        <button class="uk-button uk-button-default">Create Waypoint</button>
+                                    </div>
+                                <!--</fieldset>-->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="uk-section uk-section-small uk-section-primary uk-light uk-margin-remove uk-preserve-color">
+        
+        <div class="uk-container">
+            <a name="system"></a>
+            <h2>System</h2>
+    
+            <div class="uk-grid-match uk-child-width-expand@m" uk-grid>
+                <div>
+                    <div class="uk-card uk-card-default uk-card-hover uk-card-body">
+                        <div class="uk-card-badge uk-label"><span uk-icon="icon: cog; ratio: 2;"></span></div>
+                        <h3 class="uk-card-title">Nodes</h3>
+                        <span id="testTopic"></span>
+                    </div>
+                </div>
+                <div>
+                    <div class="uk-card uk-card-default uk-card-hover uk-card-body">
+                        <div class="uk-card-badge uk-label"><span uk-icon="icon: bolt; ratio: 2;"></span></div>
+                        <h3 class="uk-card-title">Power</h3>
+                        <dl class="uk-description-list">
+                            <dt>Amps:</dt><dd><span id="amps"></span></dd>
+                            <dt>Amp Hours:</dt><dd><span id="amphours"></span></dd>
+                        </dl>
+                    </div>
+                </div>
+                <div>
+                    <div class="uk-card uk-card-default uk-card-hover uk-card-body">
+                        <div class="uk-card-badge uk-label"><span uk-icon="icon: play-circle; ratio: 2;"></span></div>
+                        <h3 class="uk-card-title">Joystick</h3>
+                        <dl class="uk-description-list">
+                            <dt>Axes:</dt><dd><span id="joy_axes"></span></dd>
+                            <dt>Buttons:</dt><dd><span id="joy_buttons"></span></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="uk-section uk-section-small uk-section-secondary uk-light uk-preserve-color">
+        <div class="uk-container">
+            <a name="devices"></a>                
+            <h2>Devices</h2>
+                <a href="#" uk-totop uk-scroll></a>
+    
+            <div class="uk-grid-match uk-child-width-expand@m" id="devices" uk-grid>
+                <div>
+                    <div class="uk-card uk-card-default uk-card-hover uk-card-body">
+                        <table class="uk-table uk-table-small uk-table-middle uk-table-striped" id="devices-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Status</th>
+                                    <th>Message</th>
+                                    <th>Hardware ID</th>
+                                    <th>&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody id="devices-table-body">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                    <!--<div>
+                        <div class="uk-card uk-card-default uk-card-hover uk-card-body">
+                            <div class="uk-card-badge uk-label"><span uk-icon="icon: cog"></span></div>
+                            <h3 class="uk-card-title">Nodes</h3>
+                            
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="uk-card uk-card-default uk-card-hover uk-card-body">
+                            <div class="uk-card-badge uk-label"><span uk-icon="icon: bolt"></span></div>
+                            <h3 class="uk-card-title">Power</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="uk-card uk-card-default uk-card-hover uk-card-body">
+                            <div class="uk-card-badge uk-label"><span uk-icon="icon: video-camera"></span></div>
+                            <h3 class="uk-card-title">Sensors</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                        </div>
+                    </div>-->
+                    
+            </div>         
+        </div>         
+    </div>
+{% endblock %}

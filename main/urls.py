@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^dashboard/', views.dashboard, name='dashboard'),
     url(r'^aboutme/', views.aboutme, name='aboutme'),
     url(r'^exmode/', views.exmode, name='exmode'),
+    url(r'^console/', views.console, name='console'),
 ]
