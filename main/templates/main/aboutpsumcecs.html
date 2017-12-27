@@ -1,19 +1,36 @@
-{% extends 'main/base.html' %}
+{% extends 'main/base_nav.html' %}
 {% load static %}
 
 {% block maincontent %}
-    <div class="uk-section uk-section-large uk-section-media uk-light uk-background-cover" style="background-image: url({% static 'main/images/jeeves_frontpage2.png' %})">
+    <div class="uk-section uk-section-media uk-light uk-background-cover" style="background-image: url({% static 'main/images/jeeves_frontpage2.png' %})">
         <div class="uk-container">
+            <div class="uk-grid-match uk-child-width-expand@l" uk-grid>
+                <div class="uk-card uk-card-primary uk-card-body">
+                    <h1>Ask me by speech</h1>
+                    First, get my attention by pressing the button on the right, or say: <strong>"Hey, Jeeves!"</strong>
+
+                    Then, ask me simple questions like:
+                    <ul>
+                        <li>Tell me about the Robotics Lab</li>
+                        <li>Tell me about Dr. Perkowski</li>
+                        <li>How is the weather today?</li>
+                    </ul>
+                    <!--<h1>... or be boring and click on the items below</h1>-->
+                </div>
+                <div>
+                    <img src="{% static 'main/images/speak-icon-300.png' %}" width="200" height="203" style="display:block;"/>
+                </div>
+            </div>
             <div class="uk-grid-match uk-child-width-expand@m" uk-grid>
                 <div>
                     <div class="uk-card uk-card-default uk-card-body">
-                        <h3 class="uk-card-title">Portland State University</h3>
+                        <h3 class="uk-card-title">Maseeh College of Engineering and Computer Science (MCECS)</h3>
                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                     </div>
                 </div>
                 <div>
                     <div class="uk-card uk-card-default uk-card-body">
-                        <h3 class="uk-card-title">Maseeh College of Engineering and Computer Science (MCECS)</h3>
+                        <h3 class="uk-card-title">Portland State University</h3>
                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                     </div>
                 </div>

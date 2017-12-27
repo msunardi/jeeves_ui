@@ -1,4 +1,4 @@
-{% extends 'main/base.html' %}
+{% extends 'main/base_nav.html' %}
 {% load static %}
 
 {% block styles %}
@@ -34,6 +34,7 @@
             padding: 16px;
             font-size: 1.2em;
             opacity: 0.9;
+            border-radius: 10px;
         }
         span.inactive_marker {
             width: 160px;
@@ -48,6 +49,7 @@
             cursor: pointer;
             padding: 12px;
             /*font-size: 1.2em;*/
+            border-radius: 10px;
         }
         /*span.marker:before {
             content: '+';
@@ -198,20 +200,19 @@
         $(function() {
             Markers.init();
         })
-        /*$(document).ready(function {
-            $('.uk-button').addClass('uk-button-large').css('font-size', '1.5em').css('padding', '40px 40px');			
-		});*/
     </script>
 {% endblock scripts %}
  
 {% block maincontent %}
-    <div class="uk-cover-container uk-height-large uk-overflow-auto" style="height: 624px;">
+    <div class="uk-cover-container uk-overflow-auto" style="height: 624px;">
         <div id="image-wrapper">
             <img id="img_map" src="{% static 'main/images/hallways_all_90_small3.png' %}" alt="">
+            <button class="uk-button uk-button-secondary uk-box-shadow-large float-button-bottom-right"><span uk-icon="icon: question; ratio: 2"></span> Help</button>
+            <!--style="float:left;top:450px;left:30px;position:fixed;z-index:1100"-->
         </div>
-        
+
     </div>
-    <div class="uk-child-width-1-2@m uk-grid-small uk-grid-match" uk-grid>
+    <!--<div class="uk-child-width-1-2@m uk-grid-small uk-grid-match" uk-grid>
         <div>
             <div class="uk-card uk-card-default uk-card-body">
                 <h3 class="uk-card-title">How To</h3>
@@ -226,7 +227,7 @@
                 <button class="uk-button uk-button-primary uk-button-largel" type="button">GIVE ME A TOUR</button>
             </div>
         </div>
-    </div>
+    </div>-->
     <!--<script type="text/javascript" src="http://cdn.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js">
     </script>-->
         <!-- include the roslibjs library ... required -->

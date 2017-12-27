@@ -3,7 +3,8 @@
 <html>
     <head>
         <title></title>
-        <link rel="stylesheet" href="{% static 'main/uikit/css/uikit.min.css' %}" />
+        <!--<link rel="stylesheet" href="{% static 'main/uikit/css2/uikit.min.css' %}" />-->
+        <link rel="stylesheet" href="{% static 'main/uikit/css2/uikit.jeeves.min.css' %}" />
         <script src="{% static 'main/js/jquery.min.js' %}"></script>
         <script src="{% static 'main/uikit/js/uikit.min.js' %}"></script>
         <script src="{% static 'main/uikit/js/uikit-icons.min.js' %}"></script>
@@ -26,7 +27,8 @@
         
     </head>
     <body>
-        <nav class="uk-navbar-container" uk-navbar uk-sticky>
+    {% block nav %}{% endblock nav %}
+        <!--<nav class="uk-navbar-container" uk-navbar uk-sticky>
             <div class="uk-navbar-center">
 
                 <ul class="uk-navbar-nav">
@@ -40,7 +42,7 @@
                             <ul class="uk-nav uk-navbar-dropdown-nav">
                                 <li><a href="{% url 'main:dashboard' %}#system">System</a></li>
                                 <li><a href="{% url 'main:dashboard' %}#devices">Devices</a></li>
-                                <li><a href="#">Logs</a></li>                                
+                                <li><a href="#">Logs</a></li>
                             </ul>
                         </div>
                     </li>
@@ -49,26 +51,31 @@
                 </ul>
 
             </div>
-        </nav>
+        </nav>-->
+
         {% block maincontent %}
         
         {% endblock maincontent %}
-        
-    </body>
-    <footer>
-        <div class="uk-container uk-container-large" style="padding:50px 0;">
-
-            <div class="uk-grid-match uk-child-width-1-3@m" uk-grid>
-                <div>
-                    <p><img src="{% static 'main/images/PSU.png' %}" /></p>
-                </div>
-                <div>
-                    <p class="uk-text-center uk-text-middle uk-text-large uk-text-uppercase">Intelligent Robotics Lab</p>
-                </div>
-                <div>
-                    <p><img src="{% static 'main/images/ogs_standard_logo.jpg' %}" /></p>
-                </div>
-            </div>
+    <div class="uk-container">
+        &nbsp;
+    </div>
+    <!--<footer>-->
+    <!--<div class="uk-position-bottom-center footer" uk-sticky>
+        <div class="uk-child-width-1-3@m uk-grid-medium uk-flex-center">
+            &lt;!&ndash;<div class="uk-grid-small uk-grid-match uk-child-width-1-3@m" uk-grid>&ndash;&gt;
+                &lt;!&ndash;<div>&ndash;&gt;
+                    <span><img class="sponsor" src="{% static 'main/images/psu_transparent.png' %}" /></span>
+                &lt;!&ndash;</div>&ndash;&gt;
+                &lt;!&ndash;<div>&ndash;&gt;
+                    <span class="uk-text-center uk-text-middle uk-text-small uk-text-uppercase">Intelligent Robotics Lab</span>
+                &lt;!&ndash;</div>&ndash;&gt;
+                &lt;!&ndash;<div>&ndash;&gt;
+                    <span><img class="sponsor" src="{% static 'main/images/ogsystems_transparent.png' %}" /></span>
+                &lt;!&ndash;</div>&ndash;&gt;
+            &lt;!&ndash;</div>&ndash;&gt;
         </div>
-    </footer>
+    </div>-->
+
+    <!--</footer>-->
+    </body>
 </html>
