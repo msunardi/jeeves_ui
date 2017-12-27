@@ -21,6 +21,8 @@ def aboutpsu(request):
     return render(request, 'main/aboutpsumcecs.html', {'aboutpsu_active': True})
 
 def vision(request):
+    # For testing, replace video server with: 'http://127.0.0.1:8080'
+    # With roscore running, run: web_video_server (may require configuration)
     return render(request, 'main/vision.html', {'vision_active': True, 'video_server': 'http://192.168.1.4:8080'})
 
 def dashboard(request):

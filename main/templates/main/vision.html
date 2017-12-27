@@ -11,10 +11,7 @@
 
 {% block maincontent %}
         <div class="uk-cover-container" uk-height-viewport>
-            <img id="monitor" class="center-block" src="{{ video_server }}/stream?topic=/camera/rgb/image_rect_color" alt="" uk-cover>
-            <div class="uk-overlay uk-overlay-primary uk-light uk-position-bottom" style="opacity:0.6;">
-                <h1 class="uk-heading-primary">Jeeves Vision 1.0</h1>
-                <div><form>
+            <div class="uk-overlay uk-position-top-right vision-dropdown"><form>
                     <fieldset class="uk-fieldset">
                         <div class="uk-margin">
                             <select class="uk-select" id="camera">
@@ -26,7 +23,7 @@
                         </div>
                     </fieldset>
                 </form></div>
-                <script>
+            <script>
                 $("#camera").change(function() {
                     var stream_server = '{{ video_server }}/stream?topic=';
                     $("select option:selected").each(function() {
@@ -42,10 +39,51 @@
                     console.log($('img#monitor').attr('src'));
                 }).change();
                 </script>
+            <img id="monitor" class="center-block" src="{{ video_server }}/stream?topic=/camera/rgb/image_rect_color" alt="" uk-cover>
+            <!--<img id="monitor" src="http://127.0.0.1:8080/stream?topic=/usb_cam/image_raw" alt="" uk-cover>-->
+            <!--<iframe src="//www.youtube.com/embed/YE7VzlLtp-4?autoplay=1&amp;controls=0&amp;showinfo=0&amp;rel=0&amp;loop=1&amp;modestbranding=1&amp;wmode=transparent" width="560" height="315" frameborder="0" uk-cover></iframe>-->
+            <!--<div class="uk-overlay uk-overlay-primary uk-light uk-position-bottom" style="opacity:0.6;">
+                <h1 class="uk-heading-primary">Jeeves Vision 1.0</h1>
+            </div>-->
+            <button class="uk-button uk-button-secondary uk-button-large uk-box-shadow-medium float-button-bottom-right"
+                    uk-toggle="target: #vision-help" type="button"><span uk-icon="icon: question; ratio: 2"></span> Help</button>
+        </div>
+
+        <div id="vision-help" uk-modal>
+            <div class="uk-modal-dialog uk-modal-container">
+                <button class="uk-modal-close-default uk-close-large" type="button" uk-close>Close </button>
+                <div class="uk-modal-header">
+                    <h3 class="uk-modal-title">HELP: Using Vision</h3>
+                </div>
+                <div class="uk-modal-body">
+                    <div class="uk-card uk-card-hover uk-grid-collapse uk-child-width-1-2@s uk-margin" uk-grid>
+                        <div class="uk-flex-last@s uk-card-media-right uk-cover-container">
+                            <img class="uk-position-right" src="{% static 'main/images/screencast_vision_small.gif' %}" alt="" uk-gif>
+                        </div>
+                        <div>
+                            <div class="uk-card-body">
+                                <p>Vision shows what Jeeves sees!</p>
+                                <h4 class="uk-card-title">Selecting different views</h4>
+                                <p>Use the pull down widget on the top right to select a camera mode.</p>
+                                <dl>
+                                    <dt>Color</dt>
+                                    <dd>Basic color stream from Kinect RGB camera.</dd>
+                                    <dt>Grayscale</dt>
+                                    <dd>Grayscale stream from Kinect RGB camera.</dd>
+                                    <dt>Depth</dt>
+                                    <dd>Depth image stream from Kinect depth camera.</dd>
+                                    <dt>Face detection</dt>
+                                    <dd>Jeeves uses Viola-Jones algorithm to find faces, and draws a circle on each face found.</dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+
         
-        <div class="uk-child-width-1-1@m uk-grid-small uk-grid-match" uk-grid>
+        <!--<div class="uk-child-width-1-1@m uk-grid-small uk-grid-match" uk-grid>
             <div>
                 <div class="uk-card uk-card-default uk-card-body">
                     <h3 class="uk-card-title">How To</h3>
@@ -62,5 +100,5 @@
                     </dl>
 
                 </div>
-            </div>
+            </div>-->
 {% endblock %}
