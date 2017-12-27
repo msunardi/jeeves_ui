@@ -132,7 +132,7 @@
                             top: top,
                             left: left
                         // }).html('<span class="caption">' + text + '</span>').
-                        }).attr('uk-toggle','target: #'+id).html( text + '<div id="'+id+'" uk-modal>'+modal+'</div>').
+                        }).attr('uk-toggle','target: #'+id).html( text + '<div id="'+id+'" class="uk-flex-top" uk-modal>'+modal+'</div>').
                         appendTo(target);
                     }
                     $('.navinfo').click(function() {
@@ -204,7 +204,7 @@
                             top: top,
                             left: left
                         // }).html('<span class="caption">' + text + '</span>').
-                        }).attr('uk-toggle','target: #'+id).html( text + '<div id="'+id+'" uk-modal>'+modal+'</div>').
+                        }).attr('uk-toggle','target: #'+id).html( text + '<div id="'+id+'" class="uk-flex-top" uk-modal>'+modal+'</div>').
                         appendTo(target);
                     }
                     // CSS Modifications for Modal
@@ -247,10 +247,63 @@
     <div class="uk-cover-container uk-overflow-auto" style="height: 624px;">
         <div id="image-wrapper">
             <img id="img_map" src="{% static 'main/images/hallways_all_90_small3.png' %}" alt="">
-            <button class="uk-button uk-button-secondary uk-button-large uk-box-shadow-medium float-button-bottom-right"><span uk-icon="icon: question; ratio: 2"></span> Help</button>
+            <button class="uk-button uk-button-secondary uk-button-large uk-box-shadow-medium float-button-bottom-right"
+                    uk-toggle="target: #tour-help" type="button"><span uk-icon="icon: question; ratio: 2"></span> Help</button>
             <!--style="float:left;top:450px;left:30px;position:fixed;z-index:1100"-->
         </div>
-
+    </div>
+    <div id="tour-help" uk-modal>
+        <div class="uk-modal-dialog uk-modal-container">
+            <button class="uk-modal-close-default uk-close-large" type="button" uk-close>Close </button>
+            <div class="uk-modal-header">
+                <h3 class="uk-modal-title">HELP: How to Use Tour</h3>
+            </div>
+            <div class="uk-modal-body">
+                <div class="uk-card uk-card-hover uk-grid-collapse uk-child-width-1-2@s uk-margin" uk-grid>
+                    <div class="uk-flex-last@s uk-card-media-right uk-cover-container">
+                        <img src="{% static 'main/images/screencast_map_small.gif' %}" alt="" uk-gif>
+                    </div>
+                    <div>
+                        <div class="uk-card-body">
+                            <h4 class="uk-card-title">Navigating the map</h4>
+                            <p>Tap and drag anywhere on the map to scroll</p>
+                            <p>Only locations with <span class="uk-badge">BLUE</span> labels are currently available for
+                                the tour.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-card uk-card-hover uk-grid-collapse uk-child-width-1-2@s uk-margin" uk-grid>
+                    <div class="uk-flex-last@s uk-card-media-right uk-cover-container">
+                        <img src="{% static 'main/images/screenshot_button.jpg' %}" alt="" uk-cover>
+                    </div>
+                    <div>
+                        <div class="uk-card-body">
+                            <h4 class="uk-card-title">Choose a location</h4>
+                            <p>Tap on one of the BLUE (active) labels, for example: Intelligent Robotics Lab.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-card uk-card-hover uk-grid-collapse uk-child-width-1-2@s uk-margin" uk-grid>
+                    <div class="uk-flex-last@s uk-card-media-right uk-cover-container">
+                        <img src="{% static 'main/images/screenshot_nav.png' %}" alt="" uk-cover>
+                    </div>
+                    <div>
+                        <div class="uk-card-body">
+                            <h4 class="uk-card-title">Controls</h4>
+                            <dl>
+                                <dt><span class="uk-text-uppercase">Info</span></dt>
+                                <dd>Jeeves will say some information about the location</dd>
+                                <dt><span class="uk-text-uppercase">Take Me There</span></dt>
+                                <dd>Tell Jeeves to guide you to the location</dd>
+                                <dt><span class="uk-text-uppercase">Cancel Nav</span></dt>
+                                <dd>Interrupt Jeeves' spiel and stop his movements</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="uk-modal-footer">Foot</div>-->
+        </div>
     </div>
     <!--<div class="uk-child-width-1-2@m uk-grid-small uk-grid-match" uk-grid>
         <div>
@@ -436,4 +489,6 @@
             console.log('Publishing '+ obj + ' to topic: ' + topic.name);
         }
     </script>
-{% endblock maincontent %} 
+
+{% endblock maincontent %}
+
