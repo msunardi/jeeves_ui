@@ -1835,7 +1835,7 @@ select.uk-form-width-xsmall {
   text-transform: uppercase;
   transition: 0.1s ease-in-out;
   transition-property: color, background-color, border-color;
-  border-radius: 15px;
+  border-radius: 12px;
 }
 .uk-button:not(:disabled) {
   cursor: pointer;
@@ -1964,6 +1964,7 @@ select.uk-form-width-xsmall {
   padding: 0 40px;
   line-height: 53px;
   font-size: 0.875rem;
+  padding: 30px;
 }
 /* Text modifiers
  ========================================================================== */
@@ -2676,7 +2677,7 @@ select.uk-form-width-xsmall {
   position: relative;
   box-sizing: border-box;
   transition: box-shadow 0.1s ease-in-out;
-  border-radius: 15px;
+  border-radius: 12px;
 }
 /* Sections
  ========================================================================== */
@@ -2756,7 +2757,7 @@ select.uk-form-width-xsmall {
  ========================================================================== */
 .uk-card-hover:not(.uk-card-default):not(.uk-card-primary):not(.uk-card-secondary):hover {
   background: #e0e0e0;
-  box-shadow: 0 14px 25px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 14px 25px rgba(0, 0, 0, 0.32);
 }
 /* Style modifiers
  ========================================================================== */
@@ -2767,14 +2768,14 @@ select.uk-form-width-xsmall {
 .uk-card-default {
   background: #e0e0e0;
   color: #666;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.32);
 }
 .uk-card-default .uk-card-title {
   color: #333;
 }
 .uk-card-default.uk-card-hover:hover {
   background-color: #e0e0e0;
-  box-shadow: 0 14px 25px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 14px 25px rgba(0, 0, 0, 0.32);
 }
 .uk-card-default .uk-card-header {
   border-bottom: 1px solid #e5e5e5;
@@ -2788,14 +2789,14 @@ select.uk-form-width-xsmall {
 .uk-card-primary {
   background: #1e87f0;
   color: #fff;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.32);
 }
 .uk-card-primary .uk-card-title {
   color: #fff;
 }
 .uk-card-primary.uk-card-hover:hover {
   background-color: #1e87f0;
-  box-shadow: 0 14px 25px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 14px 25px rgba(0, 0, 0, 0.32);
 }
 /*
  * Secondary
@@ -2803,14 +2804,14 @@ select.uk-form-width-xsmall {
 .uk-card-secondary {
   background: #222;
   color: #fff;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.32);
 }
 .uk-card-secondary .uk-card-title {
   color: #fff;
 }
 .uk-card-secondary.uk-card-hover:hover {
   background-color: #222;
-  box-shadow: 0 14px 25px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 14px 25px rgba(0, 0, 0, 0.32);
 }
 /* Size modifier
  ========================================================================== */
@@ -7627,13 +7628,13 @@ iframe.uk-cover {
 /* Box-shadow
  ========================================================================== */
 .uk-box-shadow-small {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.32);
 }
 .uk-box-shadow-medium {
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.32);
 }
 .uk-box-shadow-large {
-  box-shadow: 0 14px 25px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 14px 25px rgba(0, 0, 0, 0.32);
 }
 .uk-box-shadow-xlarge {
   box-shadow: 0 28px 50px rgba(0, 0, 0, 0.16);
@@ -7645,13 +7646,13 @@ iframe.uk-cover {
   transition: box-shadow 0.1s ease-in-out;
 }
 .uk-box-shadow-hover-small:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.32);
 }
 .uk-box-shadow-hover-medium:hover {
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.32);
 }
 .uk-box-shadow-hover-large:hover {
-  box-shadow: 0 14px 25px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 14px 25px rgba(0, 0, 0, 0.32);
 }
 .uk-box-shadow-hover-xlarge:hover {
   box-shadow: 0 28px 50px rgba(0, 0, 0, 0.16);
@@ -11698,17 +11699,26 @@ iframe.uk-cover {
 img.sponsor {
   height: 40px;
 }
+.hook-button-large {
+  padding: 30px;
+}
 .float-button-bottom-left {
   float: left;
-  top: 450px;
+  top: 650px;
   left: 30px;
   position: fixed;
-  z-index: 1100;
+  z-index: 1009;
 }
 .float-button-bottom-right {
   float: right;
-  top: 450px;
-  right: 30px;
+  top: 630px;
+  right: 20px;
   position: fixed;
-  z-index: 1100;
+  z-index: 1009;
+}
+.navbutt {
+  font-size: 1.3em;
+  padding: 17px;
+  margin: 5px;
+  border-radius: 8px;
 }

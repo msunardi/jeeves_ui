@@ -95,10 +95,38 @@
                         var id = obj.id;
                         var img = obj.img;
 
-                        var header = '<div class="uk-modal-header"><h2 class="uk-modal-title"><strong>'+text+'</strong></h2></div>';
+                        /*var header = '<div class="uk-modal-header"><h2 class="uk-modal-title"><strong>'+text+'</strong></h2></div>';
                         var body = '<div class="uk-modal-body"><div><div class="uk-inline uk-visible-toggle uk-light"><img src="{% static 'main/images/locations' %}/'+img+'" alt="'+text+'"><a class="uk-position-center-left uk-position-small uk-hidden-hover uk-slidenav-large" href="#" uk-slidenav-previous></a><a class="uk-position-center-right uk-position-small uk-hidden-hover uk-slidenav-large" href="#" uk-slidenav-next></a></div></div></div>';
-                        var footer = '<p class="uk-text-center"><button class="uk-button uk-button-primary navinfo" type="button" value="'+id+'" data-location="'+text+'">Info</button><button class="uk-button uk-button-primary nav" type="button" value="'+id+'" data-location="'+text+'">Take me there</button><button class="uk-button uk-button-danger cancelnav" type="button">Cancel Nav</button><button class="uk-button uk-button-secondary uk-modal-close" type="button">Close</button></p><p class="uk-text-center"><button href="#" value="'+id+'" class="uk-button uk-button-link setpose">Set as current pose</button></p>';
-                        var modal = '<div class="uk-modal-dialog uk-modal-body"><button class="uk-modal-close-default" type="button" uk-close></button>'+header+body+footer+'</div>';
+                        var footer = '<p class="uk-text-center"><button class="uk-button uk-button-primary navinfo" type="button" value="'+id+'" data-location="'+text+'">Info</button>'+
+                        '<button class="uk-button uk-button-primary nav" type="button" value="'+id+'" data-location="'+text+'">Take me there</button>'+
+                        '<button class="uk-button uk-button-danger cancelnav" type="button">Cancel Nav</button>'+
+                        '<button class="uk-button uk-button-secondary uk-modal-close" type="button">Close</button></p>'+
+                        '<p class="uk-text-center"><button href="#" value="'+id+'" class="uk-button uk-button-link setpose">Set as current pose</button></p>';
+                        var modal = '<div class="uk-modal-dialog uk-modal-container"><button class="uk-modal-close-default" type="button" uk-close></button>'+header+body+footer+'</div>';*/
+                        /*<div class="uk-card uk-card-default">
+                            <div class="uk-card-media-top">
+                                <img src="../docs/images/light.jpg" alt="">
+                            </div>
+                            <div class="uk-card-body">
+                                <h3 class="uk-card-title">Media Top</h3>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+                            </div>
+                        </div>
+                        <div class="uk-overlay uk-overlay-primary uk-position-bottom">*/
+                        var header = '<div class="uk-card-media-top">'+
+                            '<div><div class="uk-inline uk-visible-toggle uk-light">'+
+                            '<img src="{% static 'main/images/locations' %}/'+img+'" alt="'+text+'">'+
+                            '<a class="uk-position-center-left uk-position-small uk-hidden-hover uk-slidenav-large" href="#" uk-slidenav-previous></a>'+
+                            '<a class="uk-position-center-right uk-position-small uk-hidden-hover uk-slidenav-large" href="#" uk-slidenav-next></a>'+
+                            '</div></div>'+
+                            '<div class="uk-overlay uk-overlay-primary uk-position-top">'+text+'</div>';
+
+                        var body = '<div class="uk-card-body"><p class="uk-text-center"><button class="uk-button uk-button-primary navbutt navinfo" type="button" value="'+id+'" data-location="'+text+'"><span uk-icon="icon: info; ratio: 2"></span><br>Info</button>'+
+                        '<button class="uk-button uk-button-primary navbutt nav" type="button" value="'+id+'" data-location="'+text+'"><span uk-icon="icon: play; ratio: 2"></span><br>Take me there</button>'+
+                        '<button class="uk-button uk-button-danger navbutt cancelnav" type="button"><span uk-icon="icon: ban; ratio: 2"></span><br>Cancel Nav</button></p>'+
+                        '<p class="uk-text-center">'+
+                        '<button href="#" value="'+id+'" class="uk-button uk-button-link uk-button-small setpose">Set as current pose</button></p></div>';
+                        var modal = '<div class="uk-modal-dialog uk-modal-container"><button class="uk-modal-close-default uk-close-large" type="button" uk-close>Close </button>'+header+body+'</div>';
 
                         $('<span class="marker" aria-labelledby="Navigation waypoint" />').css({
                             top: top,
@@ -156,10 +184,21 @@
                         var id = obj.id;
                         var img = obj.img;
 
-                        var header = '<div class="uk-modal-header"><h2 class="uk-modal-title">'+text+'</h2></div>';
+                        /*var header = '<div class="uk-modal-header"><h2 class="uk-modal-title">'+text+'</h2></div>';
                         var body = '<div class="uk-modal-body"><div><div class="uk-inline uk-visible-toggle uk-light"><img src="{% static 'main/images/locations' %}/'+img+'" alt="'+text+'"><a class="uk-position-center-left uk-position-small uk-hidden-hover uk-slidenav-large" href="#" uk-slidenav-previous></a><a class="uk-position-center-right uk-position-small uk-hidden-hover uk-slidenav-large" href="#" uk-slidenav-next></a></div></div></div>';
                         var footer = '<p class="uk-text-center"><button class="uk-button uk-button-default uk-modal-close" type="button">Close</button></p>';
-                        var modal = '<div class="uk-modal-dialog uk-modal-body"><button class="uk-modal-close-default" type="button" uk-close></button>'+header+body+footer+'</div>';
+                        var modal = '<div class="uk-modal-dialog uk-modal-body"><button class="uk-modal-close-default" type="button" uk-close></button>'+header+body+footer+'</div>';*/
+
+                        var header = '<div class="uk-card-media-top">'+
+                            '<div><div class="uk-inline uk-visible-toggle uk-light">'+
+                            '<img src="{% static 'main/images/locations' %}/'+img+'" alt="'+text+'">'+
+                            '<a class="uk-position-center-left uk-position-small uk-hidden-hover uk-slidenav-large" href="#" uk-slidenav-previous></a>'+
+                            '<a class="uk-position-center-right uk-position-small uk-hidden-hover uk-slidenav-large" href="#" uk-slidenav-next></a>'+
+                            '</div></div>'+
+                            '<div class="uk-overlay uk-overlay-primary uk-position-top">'+text+'</div>';
+
+                        var body = '<div class="uk-card-body"><p class="uk-text-center"><button class="uk-button uk-button-secondary uk-modal-close" type="button">Close</button></p></div>';
+                        var modal = '<div class="uk-modal-dialog uk-modal-container"><button class="uk-modal-close-default uk-close-large" type="button" uk-close></button>'+header+body+'</div>';
 
                         $('<span class="inactive_marker"/>').css({
                             top: top,
@@ -170,8 +209,9 @@
                     }
                     // CSS Modifications for Modal
                     $('.uk-modal-title').css('font', '1.5em');
-                    $('.uk-modal-dialog').css('width', '90%');
-                    $('.uk-button').addClass('uk-button-large').css('font-size', '1.5em').css('padding', '40px 40px');
+                    $('.uk-modal-dialog').css('width', '100%');
+                    $('.navbutt').addClass('uk-button-large').addClass('uk-box-shadow-large');
+
                 },
                 showCaptions: function() {
                     $('span.marker').on('click', function() {
@@ -207,7 +247,7 @@
     <div class="uk-cover-container uk-overflow-auto" style="height: 624px;">
         <div id="image-wrapper">
             <img id="img_map" src="{% static 'main/images/hallways_all_90_small3.png' %}" alt="">
-            <button class="uk-button uk-button-secondary uk-box-shadow-large float-button-bottom-right"><span uk-icon="icon: question; ratio: 2"></span> Help</button>
+            <button class="uk-button uk-button-secondary uk-button-large uk-box-shadow-medium float-button-bottom-right"><span uk-icon="icon: question; ratio: 2"></span> Help</button>
             <!--style="float:left;top:450px;left:30px;position:fixed;z-index:1100"-->
         </div>
 
