@@ -85,7 +85,7 @@
                     var data = active_captions;
                     console.log(data);
                     var captions = $.parseJSON(data);
-                    var coords = captions.coords;                        
+                    var coords = captions.coords;
 
                     for (var i = 0; i < coords.length; i++) {
                         var obj = coords[i];
@@ -133,12 +133,12 @@
                             left: left
                         // }).html('<span class="caption">' + text + '</span>').
                         }).attr('uk-toggle','target: #'+id).html( text + '<div id="'+id+'" uk-modal>'+modal+'</div>').
-                        appendTo(target);                        
+                        appendTo(target);
                     }
                     $('.navinfo').click(function() {
                         var loc = $(this).attr('data-location');
 			var val = $(this).val();
-                        callArbiterInfo(val, loc) 
+                        callArbiterInfo(val, loc)
                     });
 		    $('button.nav').on('click', function (e) {
                		e.preventDefault();
@@ -160,7 +160,7 @@
 		                }, function () {
                             console.log('Canceled.')
 		                });
-						
+
 		            });
                     /*$('button.nav').click(function() {
                         callService($(this).val());
@@ -175,7 +175,7 @@
                     var inactive_data = inactive_captions;
                     console.log(inactive_data);
                     var inact_captions = $.parseJSON(inactive_data);
-                    var inactive_coords = inact_captions.coords; 
+                    var inactive_coords = inact_captions.coords;
                     for (var i = 0; i < inactive_coords.length; i++) {
                         var obj = inactive_coords[i];
                         var top = obj.top;
@@ -197,7 +197,7 @@
                             '</div></div>'+
                             '<div class="uk-overlay uk-overlay-primary uk-position-top">'+text+'</div>';
 
-                        var body = '<div class="uk-card-body"><p class="uk-text-center"><button class="uk-button uk-button-secondary uk-modal-close" type="button">Close</button></p></div>';
+                        var body = '<div class="uk-card-body"><p class="uk-text-center"><button class="uk-button uk-button-secondary uk-button-large uk-modal-close" type="button"><span uk-icon="icon: close; ratio: 2"></span> Close</button></p></div>';
                         var modal = '<div class="uk-modal-dialog uk-modal-container"><button class="uk-modal-close-default uk-close-large" type="button" uk-close></button>'+header+body+'</div>';
 
                         $('<span class="inactive_marker"/>').css({
