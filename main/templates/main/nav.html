@@ -3,6 +3,7 @@
 
         <ul class="uk-navbar-nav">
             <li {% if index_active %}class='uk-active'{% endif %}><a href="{% url 'main:index' %}">Home</a></li>
+            <li><a href="#">About Me</a></li>
             <li {% if tour_active %}class='uk-active'{% endif %}><a href="{% url 'main:tour' %}">Tour</a></li>
             <li {% if aboutpsu_active %}class='uk-active'{% endif %}><a href="{% url 'main:aboutpsu' %}">Ask Jeeves</a></li>
             <li {% if vision_active %}class='uk-active'{% endif %}><a href="{% url 'main:vision' %}">Vision</a></li>
@@ -16,7 +17,7 @@
                     </ul>
                 </div>
             </li>
-            <li><a href="#">About Me</a></li>
+
             <li><a href="#">Ex-Mode</a></li>
         </ul>
 

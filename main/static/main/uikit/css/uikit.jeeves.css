@@ -11704,15 +11704,15 @@ img.sponsor {
 }
 .float-button-bottom-left {
   float: left;
-  top: 650px;
+  top: 580px;
   left: 30px;
   position: fixed;
   z-index: 1009;
 }
 .float-button-bottom-right {
   float: right;
-  top: 630px;
-  right: 20px;
+  top: 580px;
+  right: 30px;
   position: fixed;
   z-index: 1009;
 }
@@ -11724,4 +11724,24 @@ img.sponsor {
 }
 .hook-modal {
   font-size: 0.9em;
+}
+.vision-dropdown {
+  float: right;
+  width: 20%;
+  height: 50px;
+  line-height: 1.5em;
+  margin: 20px;
+  z-index: 1002;
+}
+.uk-modal-dialog {
+  width: 100%;
+}
+.footer-item {
+  border-right: 1px solid #999;
+  padding-right: 30px;
+  padding-left: 30px;
+  font-size: 0.8em;
+}
+.footer-last {
+  padding-left: 30px;
 }

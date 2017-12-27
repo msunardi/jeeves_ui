@@ -114,8 +114,9 @@
                         </div>
                         <div class="uk-overlay uk-overlay-primary uk-position-bottom">*/
                         var header = '<div class="uk-card-media-top">'+
-                            '<div><div class="uk-inline uk-visible-toggle uk-light">'+
-                            '<img src="{% static 'main/images/locations' %}/'+img+'" alt="'+text+'">'+
+                            '<div><div class="uk-cover-container">'+
+                            '<canvas width="1000" height="420"></canvas>'+
+                            '<img src="{% static 'main/images/locations' %}/'+img+'" alt="'+text+'" uk-cover>'+
                             '<a class="uk-position-center-left uk-position-small uk-hidden-hover uk-slidenav-large" href="#" uk-slidenav-previous></a>'+
                             '<a class="uk-position-center-right uk-position-small uk-hidden-hover uk-slidenav-large" href="#" uk-slidenav-next></a>'+
                             '</div></div>'+
@@ -190,8 +191,9 @@
                         var modal = '<div class="uk-modal-dialog uk-modal-body"><button class="uk-modal-close-default" type="button" uk-close></button>'+header+body+footer+'</div>';*/
 
                         var header = '<div class="uk-card-media-top">'+
-                            '<div><div class="uk-inline uk-visible-toggle uk-light">'+
-                            '<img src="{% static 'main/images/locations' %}/'+img+'" alt="'+text+'">'+
+                            '<div><div class="uk-cover-container">'+
+                            '<canvas width="1000" height="420"></canvas>'+
+                            '<img src="{% static 'main/images/locations' %}/'+img+'" alt="'+text+'" uk-cover>'+
                             '<a class="uk-position-center-left uk-position-small uk-hidden-hover uk-slidenav-large" href="#" uk-slidenav-previous></a>'+
                             '<a class="uk-position-center-right uk-position-small uk-hidden-hover uk-slidenav-large" href="#" uk-slidenav-next></a>'+
                             '</div></div>'+
@@ -267,7 +269,7 @@
                         <div class="uk-card-body">
                             <h4 class="uk-card-title">Navigating the map</h4>
                             <p>Tap and drag anywhere on the map to scroll</p>
-                            <p>Only locations with <span class="uk-badge">BLUE</span> labels are currently available for
+                            <p>Only locations with <span class="uk-label">BLUE</span> labels are currently available for
                                 the tour.</p>
                         </div>
                     </div>
@@ -279,7 +281,7 @@
                     <div>
                         <div class="uk-card-body">
                             <h4 class="uk-card-title">Choose a location</h4>
-                            <p>Tap on one of the BLUE (active) labels, for example: Intelligent Robotics Lab.</p>
+                            <p>Tap on one of the <span class="uk-label">BLUE</span> labels, for example: Intelligent Robotics Lab.</p>
                         </div>
                     </div>
                 </div>
