@@ -1,0 +1,7 @@
+Check .less auto-builds:
+$ cd Projects/uikit
+$ npm run watch
+
+The jeeves custom css are named: uikit.jeeves.*.css
+The built css directory is symlinked in Linux and the .css files are manually copied to static/main/css
+Do not commit the symlink directory - copy the .css to the static/main/css directory and commit that.

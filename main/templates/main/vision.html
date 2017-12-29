@@ -19,7 +19,7 @@
                                 <option class="camera-option" alt="color" value="/camera/rgb/image_rect_color">Color</option>
                                 <option class="camera-option" alt="grayscale" value="/camera/rgb/image_mono">Grayscale</option>
                                 <option class="camera-option" alt="depth" value="/camera/depth/image_rect">Depth</option>
-                                <option class="camera-option" alt="face detection" value="/camera/face">Face detection</option>
+                                <option class="camera-option" alt="face detection" value="/camera/face" selected>Face detection</option>
                             </select>
                         </div>
                     </fieldset>
@@ -42,8 +42,8 @@
                 }).change();
             </script>
             <canvas width="1024" height="630"></canvas>
-            <img id="monitor" src="{{ video_server }}/stream?topic=/camera/rgb/image_rect_color&type=ros_compressed" alt="" uk-cover>
-            <!--<img id="monitor" src="http://127.0.0.1:8080/stream?topic=/usb_cam/image_raw&type=ros_compressed" alt="" uk-cover>-->
+            <!--<img id="monitor" src="{{ video_server }}/stream?topic=/camera/rgb/image_rect_color&type=ros_compressed" alt="" uk-cover>-->
+            <img id="monitor" src="http://127.0.0.1:8080/stream?topic=/output/image_raw/compressed" alt="" uk-cover>
             <!--<iframe src="//www.youtube.com/embed/YE7VzlLtp-4?autoplay=1&amp;controls=0&amp;showinfo=0&amp;rel=0&amp;loop=1&amp;modestbranding=1&amp;wmode=transparent" width="560" height="315" frameborder="0" uk-cover></iframe>-->
             <!--<div class="uk-overlay uk-overlay-primary uk-light uk-position-bottom" style="opacity:0.6;">
                 <h1 class="uk-heading-primary">Jeeves Vision 1.0</h1>
